@@ -23,4 +23,13 @@
             }
         }
     }
+    .reservation {
+        @apply container absolute -bottom-10 bg-white right-0 left-0 shadow-lg p-5 flex gap-10;
+        input {
+            @apply hover:outline-none focus:outline-none border-2 px-5 py-3;
+        }
+        select {
+            @apply hover:outline-none focus:outline-none border-2 px-5 py-3;
+        }
+    }
 }

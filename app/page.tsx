@@ -24,7 +24,6 @@ export default function Page() {
                         priority
                     />
                 </div>
-
                 <div className={styles.content}>
                     <div className={styles.wrapper}>
                         <h1 className={ALBERT_SANS_500.className}>
@@ -43,6 +42,20 @@ export default function Page() {
                         </a>
                     </div>
                 </div>
+                <section className={styles.reservation}>
+                    <input type='date' name='from' id='date-from' />
+                    <input type='date' name='to' id='date-to' />
+                    <select name='room occupants' id='room occupants'>
+                        <option value='1'>1 Person</option>
+                        <option value='2'>2 Person</option>
+                    </select>
+                    <select name='room-type' id='room-type'>
+                        <option value='basic'>Basic</option>
+                        <option value='vvip_1'>VVIP 1</option>
+                        <option value='vvip_2'>VVIP 2</option>
+                        <option value='vvip_3'>VVIP 3</option>
+                    </select>
+                </section>
             </section>
         </>
     );
