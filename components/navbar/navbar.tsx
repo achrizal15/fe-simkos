@@ -68,7 +68,11 @@ const Navbar = () => {
     }, []);
 
     return (
-        <nav className={`${styles.navbar} ${isScrolled ? styles.active : ''}`}>
+        <nav
+            className={`${styles.navbar} ${
+                isScrolled || toggle ? styles.active : ''
+            }`}
+        >
             <div className={styles.content}>
                 <div className={styles['section-one']}>
                     <div className={styles['logo-content']}>

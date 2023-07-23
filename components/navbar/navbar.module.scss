@@ -1,5 +1,5 @@
 nav.navbar {
-    @apply fixed top-0 right-0 left-0 py-5 bg-transparent transition-all duration-500;
+    @apply fixed top-0 right-0 left-0 py-5 bg-transparent transition-all duration-500 z-10;
     &.active {
         @apply bg-white shadow-lg;
     }
