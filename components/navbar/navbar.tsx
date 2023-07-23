@@ -68,7 +68,7 @@ const Navbar = () => {
                         (red * 299 + green * 587 + blue * 114) / 1000;
 
                     setTextColor(
-                        brightness < 128 ? 'text-white' : 'text-black'
+                        brightness < 128 ? 'text-white' : 'text-gray-600'
                     );
                 }
             }
@@ -78,8 +78,6 @@ const Navbar = () => {
         const handleScroll = () => {
             // Get the vertical scroll position
             const scrollY = window.scrollY;
-
-            // Set the state to true when scrollY is greater than 10, otherwise set it to false
             setIsScrolled(scrollY > 50);
             handleBackgroundDetection();
         };
