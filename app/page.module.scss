@@ -9,14 +9,14 @@
         }
     }
     .content {
-        @apply absolute bg-gray-800/30  top-0 bottom-0 right-0 left-0;
+        @apply absolute bg-gray-800/60  top-0 bottom-0 right-0 left-0;
         .wrapper {
             @apply container flex flex-col items-center justify-center h-full text-white max-w-xl text-center;
             h1 {
                 @apply text-4xl leading-relaxed;
             }
             p {
-                @apply text-gray-200 mb-5;
+                @apply text-white md:text-gray-200 mb-5;
             }
             button {
                 @apply bg-transparent text-white text-xl ring-2 ring-white px-5 py-2 hover:bg-white transition duration-300 hover:text-black;

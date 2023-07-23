@@ -28,7 +28,8 @@ export default function Page() {
                 <div className={styles.content}>
                     <div className={styles.wrapper}>
                         <h1 className={ALBERT_SANS_500.className}>
-                            Welcome To Renggani Kost
+                            Welcome <br className='md:hidden' /> To Renggani
+                            Kost
                         </h1>
                         <p>
                             Easy and practical, you can book boarding houses
