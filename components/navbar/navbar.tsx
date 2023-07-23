@@ -48,7 +48,7 @@ const Navbar = () => {
     const pathname = usePathname();
     const [toggle, settoggle] = useState<boolean>(false);
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
-    const [textColor, setTextColor] = useState<string>('text-white');
+    const [textColor, setTextColor] = useState<string>('md:text-white');
 
     useEffect(() => {
         const handleBackgroundDetection = () => {
@@ -68,7 +68,7 @@ const Navbar = () => {
                         (red * 299 + green * 587 + blue * 114) / 1000;
 
                     setTextColor(
-                        brightness < 128 ? 'text-white' : 'text-gray-600'
+                        brightness < 128 ? 'md:text-white' : 'md:text-gray-600'
                     );
                 }
             }
