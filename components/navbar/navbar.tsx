@@ -48,15 +48,40 @@ const Navbar = () => {
     const pathname = usePathname();
     const [toggle, settoggle] = useState<boolean>(false);
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
+    const [textColor, setTextColor] = useState<string>('text-white');
 
     useEffect(() => {
+        const handleBackgroundDetection = () => {
+            const navbar = document.querySelector(`.${styles.navbar}`);
+
+            if (navbar) {
+                const styles = getComputedStyle(navbar);
+                const backgroundColor = styles.backgroundColor;
+                const rgb = backgroundColor.match(/\d+/g);
+                if (rgb) {
+                    const [red, green, blue] = rgb.map((color) =>
+                        parseInt(color, 10)
+                    );
+
+                    // Calculate the brightness using the formula
+                    const brightness =
+                        (red * 299 + green * 587 + blue * 114) / 1000;
+
+                    setTextColor(
+                        brightness < 128 ? 'text-white' : 'text-black'
+                    );
+                }
+            }
+        };
+        handleBackgroundDetection();
         // Add a scroll event listener when the component mounts
         const handleScroll = () => {
             // Get the vertical scroll position
             const scrollY = window.scrollY;
 
             // Set the state to true when scrollY is greater than 10, otherwise set it to false
-            setIsScrolled(scrollY > 10);
+            setIsScrolled(scrollY > 50);
+            handleBackgroundDetection();
         };
 
         window.addEventListener('scroll', handleScroll);
@@ -106,7 +131,9 @@ const Navbar = () => {
                                 return (
                                     <li
                                         key={k}
-                                        className={`${styles.item} ${
+                                        className={`${
+                                            styles.item
+                                        } ${textColor} ${
                                             pathname == e.url
                                                 ? styles['item-active']
                                                 : ''
@@ -119,7 +146,7 @@ const Navbar = () => {
                         </ul>
                     </menu>
                 </div>
-                <div className={styles['section-two']}>
+                <div className={`${styles['section-two']} ${textColor}`}>
                     Call Us.
                     <a href='tel:+6282234104446'>
                         <b className={`${ALBERT_SANS_500.className}`}>
