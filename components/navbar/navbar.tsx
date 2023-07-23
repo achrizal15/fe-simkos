@@ -1,129 +1,128 @@
 'use client';
+import React, { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { ReactNode, useState, useEffect } from 'react';
-import style from './navbar.module.scss';
-import { usePathname } from 'next/navigation';
+import { ALBERT_SANS_400, ALBERT_SANS_500 } from 'constant/fonts';
 import { FiMenu } from 'react-icons/fi';
-import { MdClose } from 'react-icons/md';
-import { BsFillCaretLeftFill, BsFillCaretRightFill } from 'react-icons/bs';
-import { AiFillHome } from 'react-icons/ai';
-import Button from '../core/Button';
+import styles from './navbar.module.scss';
 interface MenuItem {
     title: string;
     url: string;
-    icon: ReactNode;
     sub_menu: MenuItem[] | null;
 }
 const menu: MenuItem[] = [
     {
         title: 'Home',
         url: '/',
-        icon: <AiFillHome />,
+        sub_menu: null,
+    },
+    {
+        title: 'Rooms',
+        url: '/rooms',
+        sub_menu: null,
+    },
+    {
+        title: 'Reservation',
+        url: '/reservation',
+        sub_menu: null,
+    },
+    {
+        title: 'Features',
+        url: '/features',
         sub_menu: null,
     },
     {
         title: 'About',
         url: '/about',
-        icon: <AiFillHome />,
-        sub_menu: null,
-    },
-    {
-        title: 'Projects',
-        url: '/projects',
-        icon: <AiFillHome />,
         sub_menu: null,
     },
     {
         title: 'Contact',
         url: '/contact',
-        icon: <AiFillHome />,
         sub_menu: null,
     },
 ];
-type NavbarItemProps = {
-    menu: MenuItem[];
-};
+
 const Navbar = () => {
     const pathname = usePathname();
     const [toggle, settoggle] = useState<boolean>(false);
+    const [isScrolled, setIsScrolled] = useState<boolean>(false);
+
     useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            const targetElement = document.getElementById('desktop-menu');
-            if (
-                targetElement &&
-                !targetElement.contains(event.target as Node) &&
-                toggle
-            ) {
-                settoggle((state) => !state);
-            }
+        // Add a scroll event listener when the component mounts
+        const handleScroll = () => {
+            // Get the vertical scroll position
+            const scrollY = window.scrollY;
+
+            // Set the state to true when scrollY is greater than 10, otherwise set it to false
+            setIsScrolled(scrollY > 10);
         };
 
-        document.addEventListener('mousedown', handleClickOutside);
+        window.addEventListener('scroll', handleScroll);
 
+        // Clean up the event listener when the component unmounts
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
+            window.removeEventListener('scroll', handleScroll);
         };
-    }, [toggle]);
-    const NavbarItem: React.FC<NavbarItemProps> = ({
-        menu,
-    }: NavbarItemProps) => {
-        return menu.map((e, k) => (
-            <li
-                key={k}
-                className={`${style['menu-item']} ${
-                    pathname == e.url && style.active
-                }`}
-            >
-                {!toggle ? (
-                    pathname == e.url && style.active ? (
-                        e.icon
-                    ) : (
-                        ''
-                    )
-                ) : (
-                    <Link href={e.url}>{e.title}</Link>
-                )}
-            </li>
-        ));
-    };
+    }, []);
+
     return (
-        <nav className={`${style.nav}`}>
-            <div className={`${style.content}`}>
-                <div className={`${style.hero}`}>
-                    <Image
-                        src='/rg-x1.png'
-                        fill={true}
-                        sizes='(max-width: 768px) 100vw, (max-width: 1200px) 5000vw'
-                        alt='Image'
-                    />
+        <nav className={`${styles.navbar} ${isScrolled ? styles.active : ''}`}>
+            <div className={styles.content}>
+                <div className={styles['section-one']}>
+                    <div className={styles['logo-content']}>
+                        <Link href='/'>
+                            <Image
+                                className={styles.logo}
+                                src='/rg.png'
+                                width={36}
+                                height={36}
+                                alt='logo'
+                            />
+                        </Link>
+                        <span
+                            className={`${ALBERT_SANS_500.className} ${styles['logo-title']}`}
+                        >
+                            {/* Renggani Group */}
+                        </span>
+                    </div>
+                    <menu>
+                        <button
+                            className={styles['toggle-button']}
+                            onClick={() => settoggle((state) => !state)}
+                        >
+                            <FiMenu />
+                        </button>
+                        <ul
+                            className={`${styles['list-menu']}
+                            ${toggle ? styles.active : ''}`}
+                        >
+                            {menu.map((e, k) => {
+                                return (
+                                    <li
+                                        key={k}
+                                        className={`${styles.item} ${
+                                            pathname == e.url
+                                                ? styles['item-active']
+                                                : ''
+                                        } ${ALBERT_SANS_400.className}`}
+                                    >
+                                        <Link href={e.url}> {e.title}</Link>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </menu>
                 </div>
-                <div id='desktop-menu' className={`${style['desktop-menu']}`}>
-                    <Button
-                        variant={'primary'}
-                        className={`${style['toggle-button-desktop']} `}
-                        onClick={() => settoggle((state) => !state)}
-                    >
-                        {!toggle ? (
-                            <BsFillCaretLeftFill />
-                        ) : (
-                            <BsFillCaretRightFill />
-                        )}
-                    </Button>
-                    <ul
-                        className={`${style.menu} ${
-                            toggle ? style['active-toggle'] : ''
-                        }`}
-                    >
-                        <NavbarItem menu={menu} />
-                    </ul>
+                <div className={styles['section-two']}>
+                    Call Us.
+                    <a href='tel:+6282234104446'>
+                        <b className={`${ALBERT_SANS_500.className}`}>
+                            +62 82 234 104 446
+                        </b>
+                    </a>
                 </div>
-                <button
-                    className={`${style['toggle-button']}`}
-                    onClick={() => settoggle((state) => !state)}
-                >
-                    {toggle ? <MdClose /> : <FiMenu />}
-                </button>
             </div>
         </nav>
     );
