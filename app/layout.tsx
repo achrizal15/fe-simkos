@@ -5,6 +5,9 @@ import Navbar from '@/components/navbar/navbar';
 import { ALBERT_SANS } from 'constant/fonts';
 import layout from './layout.module.scss';
 import { Metadata } from 'next';
+import PrimeProvider from '@/components/theme/PrimeProvider';
+import moment from 'moment';
+moment.locale('id');
 export const metadata: Metadata = {
     title: 'Porto-App',
     icons: '/rg-x1.png',
@@ -17,11 +20,13 @@ export default function RootLayout({
 }) {
     return (
         <html lang='en'>
-            <body className={`${ALBERT_SANS.className} ${layout.main}`}>
-                <Navbar />
-                <main>{children}</main>
-                <Footer />
-            </body>
+            <PrimeProvider>
+                <body className={`${ALBERT_SANS.className} ${layout.main}`}>
+                    <Navbar />
+                    <main>{children}</main>
+                    <Footer />
+                </body>
+            </PrimeProvider>
         </html>
     );
 }

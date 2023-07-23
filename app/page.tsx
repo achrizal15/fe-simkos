@@ -1,27 +1,64 @@
+'use client';
 import Image from 'next/image';
 import * as React from 'react';
 import styles from './page.module.scss';
 import { ALBERT_SANS_500 } from 'constant/fonts';
+import bannerDesktop from 'public/templates/beta/banner.jpg';
+import bannerMobile from 'public/templates/beta/mobile.jpg';
+import { Calendar, CalendarChangeEvent } from 'primereact/calendar';
+import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
+import moment from 'moment';
+import { Button } from 'primereact/button';
+
 // https://sailing.thimpress.com/demo-1/
+interface RoomOccupants {
+    name: string;
+    id: string;
+}
+interface RoomType {
+    name: string;
+    id: string;
+}
 export default function Page() {
+    const [dates, setDates] = React.useState<string | Date | Date[] | null>([
+        moment().toDate(),
+        moment().toDate(),
+    ]);
+    const [roomOccupants, setroomOccupants] =
+        React.useState<RoomOccupants | null>(null);
+    const [roomType, setroomType] = React.useState<RoomType | null>(null);
+    const occupants = [
+        { name: '1 Person', id: 1 },
+        { name: '2 Person', id: 2 },
+    ];
+    const roomTypes = [
+        { name: 'Basic', id: 1 },
+        { name: 'VIP', id: 2 },
+        { name: 'VVIP I', id: 2 },
+        { name: 'VVIP II', id: 2 },
+        { name: 'VVIP III', id: 2 },
+    ];
     return (
         <>
             <section className={styles['banner-container']}>
                 <div className={`${styles.banner} ${styles.desktop}`}>
                     <Image
-                        src={'/templates/beta/banner.jpg'}
+                        src={bannerDesktop}
                         fill={true}
-                        objectFit='cover'
+                        placeholder='blur'
                         alt='banner'
                         priority
+                        sizes='(min-width: 768px) 100vw'
                     />
                 </div>
                 <div className={`${styles.banner} ${styles.mobile}`}>
                     <Image
-                        src={'/templates/beta/mobile.jpg'}
+                        src={bannerMobile}
                         fill={true}
+                        placeholder='blur'
                         alt='banner'
                         priority
+                        sizes='(max-width: 768px) 100vw'
                     />
                 </div>
                 <div className={styles.content}>
@@ -43,18 +80,35 @@ export default function Page() {
                     </div>
                 </div>
                 <section className={styles.reservation}>
-                    <input type='date' name='from' id='date-from' />
-                    <input type='date' name='to' id='date-to' />
-                    <select name='room occupants' id='room occupants'>
-                        <option value='1'>1 Person</option>
-                        <option value='2'>2 Person</option>
-                    </select>
-                    <select name='room-type' id='room-type'>
-                        <option value='basic'>Basic</option>
-                        <option value='vvip_1'>VVIP 1</option>
-                        <option value='vvip_2'>VVIP 2</option>
-                        <option value='vvip_3'>VVIP 3</option>
-                    </select>
+                    <Calendar
+                        value={dates}
+                        onChange={(e: CalendarChangeEvent) => setDates(e.value)}
+                        selectionMode='range'
+                        readOnlyInput
+                        minDate={moment().toDate()}
+                        placeholder='Range date'
+                        inputClassName={styles.calendarInput}
+                        className={styles.calendar}
+                        dateFormat='dd/mm/yy'
+                        showIcon
+                    />
+                    <Dropdown
+                        value={roomOccupants}
+                        onChange={(e) => setroomOccupants(e.value)}
+                        options={occupants}
+                        optionLabel='name'
+                        placeholder='Room Occupants'
+                        className={styles.select}
+                    />
+                    <Dropdown
+                        value={roomType}
+                        onChange={(e) => setroomType(e.value)}
+                        options={roomTypes}
+                        optionLabel='name'
+                        placeholder='Room Type'
+                        className={styles.select}
+                    />
+                    <Button className={styles.buttonSearch}> Find </Button>
                 </section>
             </section>
         </>

@@ -51,35 +51,13 @@ const Navbar = () => {
     const [textColor, setTextColor] = useState<string>('md:text-white');
 
     useEffect(() => {
-        const handleBackgroundDetection = () => {
-            const navbar = document.querySelector(`.${styles.navbar}`);
-
-            if (navbar) {
-                const styles = getComputedStyle(navbar);
-                const backgroundColor = styles.backgroundColor;
-                const rgb = backgroundColor.match(/\d+/g);
-                if (rgb) {
-                    const [red, green, blue] = rgb.map((color) =>
-                        parseInt(color, 10)
-                    );
-
-                    // Calculate the brightness using the formula
-                    const brightness =
-                        (red * 299 + green * 587 + blue * 114) / 1000;
-
-                    setTextColor(
-                        brightness < 128 ? 'md:text-white' : 'md:text-gray-600'
-                    );
-                }
-            }
-        };
-        handleBackgroundDetection();
-        // Add a scroll event listener when the component mounts
         const handleScroll = () => {
             // Get the vertical scroll position
             const scrollY = window.scrollY;
             setIsScrolled(scrollY > 50);
-            handleBackgroundDetection();
+            setTextColor(
+                scrollY > 50 && !toggle ? 'md:text-white' : 'text-gray-600'
+            );
         };
 
         window.addEventListener('scroll', handleScroll);
