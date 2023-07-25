@@ -56,7 +56,7 @@ const Navbar = () => {
             const scrollY = window.scrollY;
             setIsScrolled(scrollY > 50);
             setTextColor(
-                scrollY > 50 && !toggle ? 'md:text-white' : 'text-gray-600'
+                scrollY < 50 && !toggle ? 'md:text-white' : 'text-gray-600'
             );
         };
 

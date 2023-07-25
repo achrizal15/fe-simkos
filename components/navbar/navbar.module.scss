@@ -22,7 +22,7 @@ nav.navbar {
                 }
                 ul.list-menu {
                     @apply gap-5 flex flex-col md:flex-row fixed md:relative bg-white md:bg-transparent top-20 md:top-auto bottom-0 shadow-lg md:shadow-none p-5 md:p-0 
-                    transition-all duration-500 right-0 md:right-auto left-16 md:left-auto translate-x-[400px] md:translate-x-0;
+                    transition-all duration-500 right-0 md:right-auto left-16 md:left-auto translate-x-[2400px] md:translate-x-0;
                     &.active {
                         @apply translate-x-0;
                     }
