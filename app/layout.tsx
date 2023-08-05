@@ -1,11 +1,11 @@
 import * as React from 'react';
-import '@/styles/global.css';
+import PrimeProvider from '@/components/theme/PrimeProvider';
+import '@/styles/global.scss';
 import Footer from '@/components/footer/footer';
 import Navbar from '@/components/navbar/navbar';
 import { ALBERT_SANS } from 'constant/fonts';
 import layout from './layout.module.scss';
 import { Metadata } from 'next';
-import PrimeProvider from '@/components/theme/PrimeProvider';
 import moment from 'moment';
 moment.locale('id');
 export const metadata: Metadata = {

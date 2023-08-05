@@ -21,12 +21,12 @@ export const H2: React.FC<React.HTMLProps<HTMLHeadingElement>> = ({
     ...rest
 }) => {
     return (
-        <h1
+        <h2
             className={`${ALBERT_SANS_500.className} text-3xl  leading-relaxed; ${className}`}
             {...rest}
         >
             {children}
-        </h1>
+        </h2>
     );
 };
 export const H3: React.FC<React.HTMLProps<HTMLHeadingElement>> = ({
@@ -35,12 +35,12 @@ export const H3: React.FC<React.HTMLProps<HTMLHeadingElement>> = ({
     ...rest
 }) => {
     return (
-        <h1
+        <h3
             className={`${ALBERT_SANS_500.className} text-2xl  leading-relaxed; ${className}`}
             {...rest}
         >
             {children}
-        </h1>
+        </h3>
     );
 };
 export const H4: React.FC<React.HTMLProps<HTMLHeadingElement>> = ({
@@ -49,12 +49,12 @@ export const H4: React.FC<React.HTMLProps<HTMLHeadingElement>> = ({
     ...rest
 }) => {
     return (
-        <h1
+        <h4
             className={`${ALBERT_SANS_500.className} text-xl  leading-relaxed; ${className}`}
             {...rest}
         >
             {children}
-        </h1>
+        </h4>
     );
 };
 export const H5: React.FC<React.HTMLProps<HTMLHeadingElement>> = ({
@@ -63,11 +63,11 @@ export const H5: React.FC<React.HTMLProps<HTMLHeadingElement>> = ({
     ...rest
 }) => {
     return (
-        <h1
+        <h5
             className={`${ALBERT_SANS_500.className} text-lg   leading-relaxed; ${className}`}
             {...rest}
         >
             {children}
-        </h1>
+        </h5>
     );
 };

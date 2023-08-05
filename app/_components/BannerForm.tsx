@@ -34,7 +34,8 @@ function BannerForm() {
     ];
     return (
         <section className={styles.reservation}>
-            <Calendar
+           <div className={styles.wrapper}>
+           <Calendar
                 value={dates}
                 onChange={(e: CalendarChangeEvent) => setDates(e.value)}
                 selectionMode='range'
@@ -63,6 +64,7 @@ function BannerForm() {
                 className={styles.select}
             />
             <Button className={styles.buttonSearch}> Find </Button>
+           </div>
         </section>
     );
 }

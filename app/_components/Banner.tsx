@@ -40,7 +40,7 @@ const Banner = () => {
                         through our platform without having to bother coming in
                         person
                     </p>
-                    <a href='tel:+6285234104446' target='_blank'>
+                    <a href='https://wa.me/6285234104446?text=' target='_blank'>
                         <button className={ALBERT_SANS_500.className}>
                             Book Now
                         </button>
