@@ -9,7 +9,7 @@ import { Metadata } from 'next';
 import moment from 'moment';
 moment.locale('id');
 export const metadata: Metadata = {
-    title: 'Porto-App',
+    title: 'Simkos Landing',
     icons: '/rg-x1.png',
 };
 
