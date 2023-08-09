@@ -11,7 +11,7 @@ export default function Page() {
     return (
         <>
             <Banner />
-            <Section >
+            <Section>
                 <Section.Heading
                     title='Master Rooms'
                     description='Contrary to popular belief'

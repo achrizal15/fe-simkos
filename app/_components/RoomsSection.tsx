@@ -47,7 +47,7 @@ export default function RoomsSection() {
 
     return (
         <Carousel
-            containerClassName={style.containerClassName}
+            containerClassName={style.roomContainerCarousel}
             ref={carouselRef}
             showIndicators={false}
             footer={

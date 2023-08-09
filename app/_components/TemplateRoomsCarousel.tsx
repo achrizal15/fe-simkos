@@ -1,4 +1,4 @@
-import { H3, H4, H5 } from '@/components/core/Headings/Headings';
+import { H3 } from '@/components/core/Headings/Headings';
 import Image from 'next/image';
 import React from 'react';
 import RoomInterface from 'utils/Interfaces/RoomInterface';
