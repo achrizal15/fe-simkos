@@ -59,7 +59,7 @@
 .offerSection{
     @apply mt-10 relative mb-20;
     .imageContainer{
-        @apply relative w-full md:h-[200px] lg:h-[500px] blur-[2px];
+        @apply relative w-full h-[200px] lg:h-[500px] blur-[2px] bg-fixed object-center object-cover;
     }
     .contentWrapper{
         @apply absolute top-0 left-0 right-0 -bottom-20 bg-gray-100/75;
