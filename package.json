@@ -2,11 +2,9 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
-        "start": "next start",
-        "lint": "next lint"
+        "start": "next start"
     },
     "dependencies": {
-        "@typescript-eslint/parser": "^6.3.0",
         "moment": "^2.29.4",
         "next": "^13.4.9",
         "primereact": "^9.6.0",
@@ -21,13 +19,6 @@
         "@types/react": "18.2.14",
         "@typescript-eslint/eslint-plugin": "^5.62.0",
         "autoprefixer": "^10.4.14",
-        "eslint": "^8.47.0",
-        "eslint-config-next": "13.4.13",
-        "eslint-config-standard-with-typescript": "^37.0.0",
-        "eslint-plugin-import": "^2.28.0",
-        "eslint-plugin-n": "^16.0.1",
-        "eslint-plugin-promise": "^6.1.1",
-        "eslint-plugin-react": "^7.33.1",
         "postcss": "^8.4.25",
         "tailwindcss": "^3.3.2",
         "typescript": "^5.1.6"
