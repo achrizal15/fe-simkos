@@ -1,0 +1,21 @@
+.footer{
+    @apply bg-gradient-to-l from-purple-800 to-gray-800 text-white;
+    .wrapper{
+        @apply container py-8;
+        .logoWrapper{
+            @apply mb-10;
+        }
+        .content{
+            @apply md:grid-cols-3 grid md:gap-6 lg:gap-10 border-b pb-8; 
+            .list{
+                @apply mb-3;
+            }
+            .btnLogin{
+                @apply bg-white text-black font-bold px-4 py-2 hover:bg-black hover:text-white;
+            }
+        }
+        .copyright{
+            @apply mt-8 flex items-center justify-between;
+        }
+    }
+}

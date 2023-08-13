@@ -3,14 +3,16 @@ import styles from '../page.module.scss';
 import bgImage from '../../public/templates/beta/bg-offer.jpg';
 import Image from 'next/image';
 import OfferingData from './OfferingData';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import 'swiper/css'; // Import Swiper styles
-import { H3 } from '@/components/core/Headings/Headings';
+import { H2, H3 } from '@/components/core/Headings/Headings';
 import Button from '@/components/core/Button';
 import { ALBERT_SANS_500 } from 'constant/fonts';
+import { useSwiperSlide } from 'swiper/react';
 
-interface OfferSectionProps {}
-const OfferSection: React.FC<OfferSectionProps> = ({}) => {
+interface OfferSectionProps { }
+const OfferSection: React.FC<OfferSectionProps> = ({ }) => {
+    const swiperSlide = useSwiperSlide();
     return (
         <div className={styles.offerSection}>
             <div
@@ -20,7 +22,7 @@ const OfferSection: React.FC<OfferSectionProps> = ({}) => {
                 {/* <Image src={bgImage} fill alt='offer-image' /> */}
             </div>
             <div className={styles.contentWrapper}>
-                <div className='container pt-16'>
+                <div className='container md:pt-16'>
                     <Swiper spaceBetween={0} slidesPerView={1} navigation>
                         {OfferingData.map((offering, index) => (
                             <SwiperSlide key={index}>
@@ -30,11 +32,12 @@ const OfferSection: React.FC<OfferSectionProps> = ({}) => {
                                         src={offering.image}
                                         fill
                                     />
-                                    <div className='absolute top-0 bottom-0 left-0 right-0 bg-black/50 flex flex-col items-end justify-center gap-4 p-8'>
+                                    
+                                    <div className='absolute top-0 bottom-0 left-0 right-0 bg-black/60 flex flex-col items-end justify-center gap-4 p-8'>
                                         <div className='text-right text-white'>
-                                            <H3 className='uppercase'>
+                                            <H2 className='uppercase lg:text-4xl'>
                                                 {offering.title}
-                                            </H3>
+                                            </H2>
                                             <p className='text-sm md:text-lg'>
                                                 {offering.description}
                                             </p>
@@ -43,6 +46,7 @@ const OfferSection: React.FC<OfferSectionProps> = ({}) => {
                                             {offering.label_action}
                                         </button>
                                     </div>
+
                                 </div>
                             </SwiperSlide>
                         ))}
