@@ -15,7 +15,7 @@
             }
         }
         .copyright{
-            @apply mt-8 flex items-center justify-between;
+            @apply mt-8 flex items-center justify-between flex-col md:flex-row;
         }
     }
 }
