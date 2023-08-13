@@ -56,7 +56,7 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className={styles.copyright}>
-                    <p>SimKos | Sistem Management Kost</p>
+                    <p>SimKos | Sistem Manajemen Kos</p>
                   <div className="flex">
                   <AiOutlineCopyright/> <p> 2023 <b className="font-bold">CV. Renggani Karya Semesta</b></p>
                   </div>
