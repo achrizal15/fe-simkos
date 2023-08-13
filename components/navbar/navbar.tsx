@@ -6,43 +6,8 @@ import Link from 'next/link';
 import { ALBERT_SANS_400, ALBERT_SANS_500 } from 'constant/fonts';
 import { FiMenu } from 'react-icons/fi';
 import styles from './navbar.module.scss';
-interface MenuItem {
-    title: string;
-    url: string;
-    sub_menu: MenuItem[] | null;
-}
-const menu: MenuItem[] = [
-    {
-        title: 'Home',
-        url: '/',
-        sub_menu: null,
-    },
-    {
-        title: 'Rooms',
-        url: '/rooms',
-        sub_menu: null,
-    },
-    {
-        title: 'Reservation',
-        url: '/reservation',
-        sub_menu: null,
-    },
-    {
-        title: 'Features',
-        url: '/features',
-        sub_menu: null,
-    },
-    {
-        title: 'About',
-        url: '/about',
-        sub_menu: null,
-    },
-    {
-        title: 'Contact',
-        url: '/contact',
-        sub_menu: null,
-    },
-];
+import { FronEndMenu as menu } from 'constant/menu';
+
 
 const Navbar = () => {
     const pathname = usePathname();
