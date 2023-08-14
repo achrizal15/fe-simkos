@@ -50,16 +50,18 @@ const Footer = () => {
                         </ul>
                     </div>
                     <div>
-                        <button className={styles.btnLogin}>
-                            Login Panel
-                        </button>
+                        <Link href={`/rgpanel`}>
+                            <button className={styles.btnLogin}>
+                                Login Panel
+                            </button>
+                        </Link>
                     </div>
                 </div>
                 <div className={styles.copyright}>
                     <p>SimKos | Sistem Manajemen Kos</p>
-                  <div className="flex">
-                  <AiOutlineCopyright/> <p> 2023 <b className="font-bold">CV. Renggani Karya Semesta</b></p>
-                  </div>
+                    <div className="flex">
+                        <AiOutlineCopyright /> <p> 2023 <b className="font-bold">CV. Renggani Karya Semesta</b></p>
+                    </div>
                 </div>
             </div>
         </footer>
