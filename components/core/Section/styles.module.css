@@ -1,6 +1,0 @@
-.baseContainer {
-  @apply container;
-}
-.baseContainer .headingWrapper {
-  @apply text-center;
-}
