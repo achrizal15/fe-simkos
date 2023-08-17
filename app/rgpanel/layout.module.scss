@@ -1,3 +1,4 @@
+
 .layout{
-    @apply flex flex-col justify-between min-h-screen text-gray-600;
+    @apply flex flex-col justify-between min-h-screen text-gray-600 lg:w-3/4 pt-20 lg:ml-auto px-[20px] lg:px-10 pb-2;
 }

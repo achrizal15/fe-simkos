@@ -43,12 +43,12 @@ const RgPanelSidebarMenu: SidebarMenuItemInterface[] = [
     {
         label: 'Tenant Management',
         icon: 'pi pi-fw pi-users',
-        url:"/rgp",
+        url:null,
         items: [
             {
                 label: 'Tenant List',
                 icon: 'pi pi-fw pi-list',
-                url:"/rgp",
+                url:"/rgpanel/tenant-list",
                 items: []
             },
             {

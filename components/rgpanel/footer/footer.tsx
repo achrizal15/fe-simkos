@@ -7,7 +7,13 @@ import { AiOutlineCopyright } from "react-icons/ai";
 const Footer = () => {
     return (
         <footer className={styles.footer}>
-            2023
+         <p className="flex items-center gap-1 font-semibold"> Copyright <AiOutlineCopyright/> 2023</p>
+         <p className="flex justify-between gap-1">
+            Powered by
+            <b>
+                CV. Renggani Karya Semesta
+            </b>
+         </p>
         </footer>
     );
 };
