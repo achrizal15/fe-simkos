@@ -24,6 +24,7 @@ const Page = () => {
                 </DividerClient>
                 <div className="flex items-center justify-center gap-3">
                     <ButtonLoginWithOther icon="pi pi-google" signProvider="google"/>
+                    <ButtonLoginWithOther icon="pi pi-facebook" signProvider="facebook"/>
                 </div>
             </div>
         </section>)
