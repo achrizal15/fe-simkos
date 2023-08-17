@@ -1,5 +1,6 @@
 import PrimeProvider from '@/components/theme/PrimeProvider';
 import moment from 'moment';
+import 'primeicons/primeicons.css';
 import '@/styles/global.scss';
 import styles from './layout.module.scss'
 import { Metadata } from 'next';
@@ -8,7 +9,8 @@ import Sidebar from '@/components/rgpanel/sidebar/Sidebar';
 import Footer from '@/components/rgpanel/footer/footer';
 import { ALBERT_SANS } from 'constant/fonts';
 import Content from '@/components/rgpanel/content/Content';
-import MobileMenu from './_component/MobileMenu';
+import AuthProvider from '@/components/AuthProvider/AuthProvider';
+
 moment.locale('id');
 export const metadata: Metadata = {
     title: 'RGPANEL',
@@ -22,6 +24,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang='en'>
+            <AuthProvider >
             <PrimeProvider>
                 <body className={` ${ALBERT_SANS.className}`}>
                     <Navbar />
@@ -34,6 +37,7 @@ export default function RootLayout({
                     </main>
                 </body>
             </PrimeProvider>
+            </AuthProvider>
         </html>
     );
 }

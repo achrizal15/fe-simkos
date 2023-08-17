@@ -1,6 +1,5 @@
 "use client"
 import { Avatar } from "primereact/avatar"
-import 'primeicons/primeicons.css';
 import { Menu } from "primereact/menu";
 import { useRef } from "react";
 

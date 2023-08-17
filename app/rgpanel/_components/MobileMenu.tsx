@@ -17,7 +17,7 @@ const MobileMenu = () => {
             {menuItems.map((item, key) => (
                 <div key={key} className="lg:hidden mb-3">
                     <H4>{item.label}</H4>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 mt-2 gap-2">
                         {
                             item.items.length == 0
                                 ? <MobileMenuItem item={item} />

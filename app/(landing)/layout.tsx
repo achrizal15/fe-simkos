@@ -7,6 +7,7 @@ import { ALBERT_SANS } from 'constant/fonts';
 import layout from './layout.module.scss';
 import { Metadata } from 'next';
 import moment from 'moment';
+import 'primeicons/primeicons.css';
 moment.locale('id');
 export const metadata: Metadata = {
     title: 'Simkos Landing',
