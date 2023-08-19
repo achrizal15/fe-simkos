@@ -1,5 +1,5 @@
 "use client"
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { Avatar } from "primereact/avatar"
 import { Menu } from "primereact/menu";
 import { useRef } from "react";
@@ -11,6 +11,8 @@ interface AvatarNavbarInterface {
 }
 
 const AvatarNavbar: React.FC<AvatarNavbarInterface> = ({ icon = 'pi pi-user', label = 'V', image = "" }) => {
+    const session = useSession()
+    console.log(session)
     const menuRight = useRef(null);
     const items = [
         {
