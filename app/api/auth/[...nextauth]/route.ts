@@ -22,7 +22,8 @@ const handler = NextAuth({
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                    const res = await fetch(process.env.NEXT_PUBLIC_API_URL, {
+                  try {
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -31,6 +32,9 @@ const handler = NextAuth({
                     });
                     const data = await res.json();
                     return { ...data.user, token: data.token };
+                  } catch (error) {
+                    return null
+                  }
             }
         }),
     ],
