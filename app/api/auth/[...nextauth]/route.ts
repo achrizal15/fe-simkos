@@ -31,7 +31,7 @@ const handler = NextAuth({
                         body: JSON.stringify(credentials),
                     });
                     const data = await res.json();
-                    return { ...data.user, token: data.token };
+                    return data.user;
                 } catch (error) {
                     return new Error(error)
                 }
@@ -39,18 +39,18 @@ const handler = NextAuth({
         }),
     ],
     callbacks: {
-        async jwt({ token, user }) {
-            return { ...token, ...user }
-        },
-        async session({ session, token, user }) {
-            const userData: UserJwt = <UserJwt>{
-                name: token.name,
-                token: token.token,
-                email: token.email
-            }
-            session.user = userData
-            return session;
-        }
+        // async jwt({ token, user }) {
+        //     return { ...token, ...user }
+        // },
+        // async session({ session, token, user }) {
+        //     const userData: UserJwt = <UserJwt>{
+        //         name: token.name,
+        //         token: token.token,
+        //         email: token.email
+        //     }
+        //     session.user = userData
+        //     return session;
+        // }
     },
     pages: {
         error: '/login',
