@@ -22,7 +22,6 @@ const handler = NextAuth({
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                try {
                     const res = await fetch(`http://127.0.0.1:8000/api/login`, {
                         method: 'POST',
                         headers: {
@@ -32,9 +31,7 @@ const handler = NextAuth({
                     });
                     const data = await res.json();
                     return data.user;
-                } catch (error) {
-                    return new Error(error)
-                }
+            
             }
         }),
     ],
