@@ -25,7 +25,7 @@ export default function RootLayout({
                 <body className={`${ALBERT_SANS.className} ${layout.layout}`}>
                     <main className='grid md:grid-cols-2 bg-white overflow-hidden rounded-lg shadow-lg h-[90vh] mt-5'>
                         <div className='relative md:h-full w-full '>
-                            <Image src={authImage} fill alt='aut-image' objectFit='cover' sizes='(min-width: 768px) 100vw' />
+                            <Image src={authImage} fill alt='aut-image' style={{objectFit:"cover"}} priority sizes='(min-width: 768px) 100vw' />
                             <div className='absolute bg-black/70 top-0 left-0 right-0 bottom-0 flex items-center justify-center p-5'>
                                 <H1 className="text-white text-center">RGPANEL SIMKOS</H1>
                             </div>

@@ -1,4 +1,5 @@
 "use client"
+import { signOut } from "next-auth/react";
 import { Avatar } from "primereact/avatar"
 import { Menu } from "primereact/menu";
 import { useRef } from "react";
@@ -22,9 +23,7 @@ const AvatarNavbar: React.FC<AvatarNavbarInterface> = ({ icon = 'pi pi-user', la
         {
             label: 'Logout',
             icon: 'pi pi-sign-out',
-            command: () => {
-                console.log("Logout")
-            }
+            command: () => signOut({redirect:true,callbackUrl:'/login'})
         }
     ];
     return (<>
@@ -32,7 +31,7 @@ const AvatarNavbar: React.FC<AvatarNavbarInterface> = ({ icon = 'pi pi-user', la
         <div className="flex items-center gap-2 cursor-pointer" onClick={(event) => menuRight.current.toggle(event)}>
             <Avatar icon={icon} className="font-semibold p-overlay-badge w-10 h-10" label={label} image={image} shape="circle"  >
             </Avatar>
-            <p className="font-semibold text-gray-800">Veilicia Permata</p>
+            <p className="font-semibold text-gray-800">Rachel Velicia</p>
             <i className="pi pi-angle-down"></i>
         </div>
 
