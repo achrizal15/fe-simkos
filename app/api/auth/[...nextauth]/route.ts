@@ -44,11 +44,11 @@ const handler = NextAuth({
         },
         async session({ session, token, user }) {
             const userData: UserJwt = <UserJwt>{
-                name:token.name,
-                token:token.token,
-                email:token.email
+                name: token.name,
+                token: token.token,
+                email: token.email
             }
-            session.user =userData
+            session.user = userData
             return session;
         }
     },

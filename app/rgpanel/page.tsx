@@ -8,7 +8,7 @@ const Page = () => {
     return (
         <div>
             <MobileMenu />
-            Dashboard
+            Dashboard {session.data.user.name}
         </div>
     )
 }
