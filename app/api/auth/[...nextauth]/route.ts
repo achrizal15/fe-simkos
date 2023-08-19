@@ -18,11 +18,11 @@ const handler = NextAuth({
             id: 'credentials',
             name: 'Credentials',
             credentials: {
-                credential: { label: 'Credential', type: 'text' },
+                credential: { label: 'Username or Email', type: 'text' },
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                  try {
+                try {
                     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
                         method: 'POST',
                         headers: {
@@ -30,11 +30,14 @@ const handler = NextAuth({
                         },
                         body: JSON.stringify(credentials),
                     });
-                    const data = await res.json();
-                    return { ...data.user, token: data.token };
-                  } catch (error) {
+                    if (res.status == 200) {
+                        const data = await res.json();
+                        return { ...data.user, token: data.token };
+                    }
                     return null
-                  }
+                } catch (error) {
+                    return null
+                }
             }
         }),
     ],
