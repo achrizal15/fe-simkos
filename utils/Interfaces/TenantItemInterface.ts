@@ -17,6 +17,7 @@ interface TenantInterface {
     emergency_contact_phone: string | null;
     created_at: string;
     updated_at: string;
+    deleted_at: string
 }
 
 export default TenantInterface;

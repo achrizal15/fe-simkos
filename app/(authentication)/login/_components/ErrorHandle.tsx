@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react"
 const ErrorHandle = ({data}:{data:MessagesMessage|null}) => {
     const msg = useRef(null)
     useEffect(() => {
-        const message: MessagesMessage = { sticky: true, severity: 'error', summary: 'Error', detail: 'Invalid credentials', closable: false, life: 10,...data }
+        const message: MessagesMessage = { sticky: true, severity: 'error', summary: 'Error', detail: 'Invalid credentials', closable: false, life: 300,...data }
         msg.current.show(message)
     }, [])
 

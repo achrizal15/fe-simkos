@@ -3,7 +3,8 @@
 @tailwind utilities;
 /* width */
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 3px;
+    height: 3px;
 }
   
 /* Track */
@@ -20,4 +21,18 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #751bbe;
+}
+.p-button.p-button-icon-only.p-button-rounded{
+    width: 0;
+    height: 0;
+    @apply p-3 text-xs;
+    &:focus{
+        box-shadow: none;
+    }
+}
+.p-button-icon{
+    width: auto;
+    height: auto;
+    padding: 0;
+    font-size: 10px;
 }
