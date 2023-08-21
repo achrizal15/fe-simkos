@@ -1,23 +1,29 @@
-
 import TenantInterface from '@/utils/Interfaces/TenantItemInterface';
-import { axiosAuthServer } from '@/utils/fetching/axios';
 import TableTenant from './_components/TableTenant';
 import MetaInterface from '@/utils/Interfaces/paginator/MetaInterface';
+import { getServerSession } from 'next-auth';
+import UserJwtInterface from '@/utils/Interfaces/UserJwtInterface';
+import nextAuthOptions from '@/constant/nextAuthOption';
 
 const getTenantList = async () => {
-    const res = await (await axiosAuthServer()).get(`tenants`)
-    if (res.status != 200) {
-        throw new Error('Failed to fetch data')
-    }
-    return res.data
+    const { user }: { user: UserJwtInterface } = await getServerSession(nextAuthOptions)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tenants`, {
+        headers: {
+            'Content-type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${user.token}`
+        },
+        cache: 'no-store'
+    }).then(res => res.json())
+    return res
 }
 
 const Page = async () => {
-    const { data,meta }: { data: TenantInterface[],meta:MetaInterface } = await getTenantList()
+    const { data, meta }: { data: TenantInterface[], meta: MetaInterface } = await getTenantList()
 
     return (
         <div>
-            <TableTenant data={data} meta={meta}/>
+            <TableTenant data={data} meta={meta} />
         </div>
     )
 }

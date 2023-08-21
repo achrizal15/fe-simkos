@@ -1,5 +1,5 @@
 'use client'
-import PrimeButtom from "@/components/core/Button/PrimeButton"
+import PrimeButton from "@/components/core/Button/PrimeButton"
 import { Table, Td } from "@/components/rgpanel/Datatable/Tables"
 import ColumnMetaInterface from "@/utils/Interfaces/ColumnMetaInterface"
 import TenantInterface from "@/utils/Interfaces/TenantItemInterface"
@@ -9,6 +9,7 @@ import { Paginator } from "primereact/paginator"
 import Restore from "./Restore"
 import { ConfirmDialog } from "primereact/confirmdialog"
 import { Toast } from "primereact/toast"
+import Delete from "./Delete"
 
 const TableTenant = ({ data, meta }: { data: TenantInterface[], meta?: MetaInterface }) => {
     const column: ColumnMetaInterface[] = [
@@ -20,11 +21,11 @@ const TableTenant = ({ data, meta }: { data: TenantInterface[], meta?: MetaInter
     const actionColumn = (item: TenantInterface) => {
         return (
             <div className="gap-2 flex justify-center items-center">
-                <PrimeButtom tooltip="Show" tooltipOptions={{ showDelay: 500, position: 'bottom' }}  severity="info" icon="pi pi-eye"></PrimeButtom>
-                <PrimeButtom tooltip="Edit" tooltipOptions={{ showDelay: 500, position: 'bottom' }}  severity="warning" icon="pi pi-pencil"></PrimeButtom>
+                <PrimeButton tooltip="Show" tooltipOptions={{ showDelay: 500, position: 'bottom' }} severity="info" icon="pi pi-eye"></PrimeButton>
+                <PrimeButton tooltip="Edit" tooltipOptions={{ showDelay: 500, position: 'bottom' }} severity="warning" icon="pi pi-pencil"></PrimeButton>
                 {item.deleted_at != null
-                    ? <Restore item={item} toastMessage={(message)=> toast.current?.show(message)}/>
-                    : <PrimeButtom tooltip="Delete" tooltipOptions={{ showDelay: 500, position: 'bottom' }}  severity="danger" icon="pi pi-trash"></PrimeButtom>
+                    ? <Restore item={item} toastMessage={(message) => toast.current?.show(message)} />
+                    : <Delete item={item} toastMessage={(message) => toast.current?.show(message)} />
                 }
             </div>
         )

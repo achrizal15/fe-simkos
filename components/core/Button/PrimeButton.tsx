@@ -1,9 +1,9 @@
 import { Button, ButtonProps } from "primereact/button";
 
-interface PrimeButtomInterface extends ButtonProps{
+interface PrimeButtonInterface extends ButtonProps{
     children?:React.ReactNode
 }
 
-export default function PrimeButtom({children,...rest}:PrimeButtomInterface){
+export default function PrimeButton({children,...rest}:PrimeButtonInterface){
     return <Button raised rounded outlined {...rest}>{children}</Button>
 }
