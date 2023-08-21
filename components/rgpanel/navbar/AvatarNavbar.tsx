@@ -12,7 +12,6 @@ interface AvatarNavbarInterface {
 
 const AvatarNavbar: React.FC<AvatarNavbarInterface> = ({ icon = 'pi pi-user', label = 'V', image = "" }) => {
     const session = useSession()
-    console.log(session)
     const menuRight = useRef(null);
     const items = [
         {

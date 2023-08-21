@@ -4,7 +4,9 @@
         "baseUrl": ".",
         "paths": {
             "@/components/*": ["components/*"],
-            "@/styles/*": ["styles/*"]
+            "@/styles/*": ["styles/*"],
+            "@/constant/*":["constant/*"],
+            "@/utils/*":["utils/*"]
         },
         "allowJs": true,
         "skipLibCheck": true,

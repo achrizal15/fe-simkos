@@ -12,6 +12,9 @@
     &.danger {
         @apply bg-gradient-to-r from-red-500 to-cyan-600;
     }
+    &:disabled{
+        cursor:not-allowed;
+    }
 }
 
 @keyframes AnimateButton {
