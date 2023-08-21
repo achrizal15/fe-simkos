@@ -30,7 +30,6 @@ const TableTenant = ({ data, meta }: { data: TenantInterface[], meta?: MetaInter
             </div>
         )
     }
-
     return (
         <>
             <Toast ref={toast} position="bottom-right" />
