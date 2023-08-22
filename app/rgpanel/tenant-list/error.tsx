@@ -12,7 +12,7 @@ export default function Error({
 
   return (
     <div>
-      <h2>Something went wrong!</h2>
+      <h2>Something went wrong! <button onClick={()=>reset()}>Try again.</button></h2>
       {error.message}
     </div>
   )

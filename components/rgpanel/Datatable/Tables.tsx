@@ -1,4 +1,5 @@
 'use client'
+import { ALBERT_SANS } from "@/constant/fonts"
 import { Column, ColumnProps } from "primereact/column"
 import { DataTable, DataTableValueArray, DataTableProps } from "primereact/datatable"
 interface TableInterface extends DataTableProps<DataTableValueArray> {
@@ -16,7 +17,7 @@ export const Table: React.FC<TableInterface> = ({ children, ...rest }) => {
 }
 export const Td: React.FC<TdInterface> = ({ children, ...rest }) => {
     return (
-        <Column {...rest}>
+        <Column headerClassName={`text-gray-800 ${ALBERT_SANS.className} ${rest.className}`} {...rest}>
             {children}
         </Column>
     )

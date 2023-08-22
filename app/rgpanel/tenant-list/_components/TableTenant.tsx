@@ -11,16 +11,33 @@ import { ConfirmDialog } from "primereact/confirmdialog"
 import { Toast } from "primereact/toast"
 import Delete from "./Delete"
 import moment from "moment"
+import UserJwtInterface from "@/utils/Interfaces/UserJwtInterface"
+import { useSession } from "next-auth/react"
+import LinkInterface from "@/utils/Interfaces/paginator/LinkInterface"
+import TenantColumn from "./TenantColumn"
 
 
+const getTenantList = async (session: any, url: string) => {
+    const { user }: { user: UserJwtInterface } = session
+    const res = await fetch(url, {
+        headers: {
+            'Content-type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${user.token}`
+        },
+        cache: 'no-store'
+    })
+    if (res.status != 200) {
+        throw new Error('Failed to fetch data')
+    }
+    return await res.json()
+}
 const TableTenant = ({ data, meta }: { data: TenantInterface[], meta?: MetaInterface }) => {
-    const column: ColumnMetaInterface[] = [
-        { field: 'name', header: 'Name' },
-        { field: 'phone', header: 'Phone' },
-        { field: 'occupation', header: 'Occupation' }
-    ]
-    const [tenants, setTenants] = useState<TenantInterface[]>(data)
     const toast = useRef<Toast>(null);
+    const session = useSession()
+    const column: ColumnMetaInterface[] = TenantColumn
+    const [tenants, setTenants] = useState<TenantInterface[]>(data)
+    const [metaPaginator, setMetaPaginator] = useState<MetaInterface>(meta)
     const actionColumn = (item: TenantInterface) => {
         return (
             <div className="gap-2 flex justify-center items-center">
@@ -50,23 +67,29 @@ const TableTenant = ({ data, meta }: { data: TenantInterface[], meta?: MetaInter
             </div>
         )
     }
-    const paginateHandle = (data: PaginatorPageChangeEvent) => {
-        console.log(data)
+    const paginateHandle = async (data: PaginatorPageChangeEvent) => {
         const page = data.page + 1
-        console.log(meta.links.find((link)=>(link.label==page.toString())))
+        const link: LinkInterface = metaPaginator.links.find((link) => (link.label == page.toString()))
+        const res = await getTenantList(session.data, link.url)
+        setTenants(res.data)
+        setMetaPaginator(res.meta)
     }
     return (
         <>
             <Toast ref={toast} position="bottom-right" />
             <ConfirmDialog />
-            <Table value={tenants}>
-                {column.map((item, key) => (
-                    <Td field={item.field} header={item.header} key={key} />
-                ))}
+            <Table value={tenants} resizableColumns >
                 <Td header="Action" body={actionColumn}></Td>
+                {column.map((item, key) => (
+                    <Td field={item.field} header={item.header} key={key} style={{ width: item?.width }} />
+                ))}
             </Table>
-            <Paginator first={meta.current_page} rows={meta.to} totalRecords={meta.total} 
-            onPageChange={paginateHandle} />
+            <Paginator
+                first={metaPaginator.from}
+                rows={metaPaginator.per_page}
+                totalRecords={metaPaginator.total}
+                onPageChange={paginateHandle}
+            />
         </>
     )
 }
