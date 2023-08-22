@@ -14,8 +14,11 @@ const getTenantList = async () => {
             Authorization: `Bearer ${user.token}`
         },
         cache: 'no-store'
-    }).then(res => res.json())
-    return res
+    })
+    if (res.status != 200) {
+        throw new Error('Failed to fetch data')
+    }
+    return await res.json()
 }
 
 const Page = async () => {

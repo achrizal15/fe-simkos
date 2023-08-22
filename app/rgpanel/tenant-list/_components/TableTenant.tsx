@@ -4,12 +4,14 @@ import { Table, Td } from "@/components/rgpanel/Datatable/Tables"
 import ColumnMetaInterface from "@/utils/Interfaces/ColumnMetaInterface"
 import TenantInterface from "@/utils/Interfaces/TenantItemInterface"
 import MetaInterface from "@/utils/Interfaces/paginator/MetaInterface"
-import React, { useRef } from 'react';
-import { Paginator } from "primereact/paginator"
+import React, { useRef, useState } from 'react';
+import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator"
 import Restore from "./Restore"
 import { ConfirmDialog } from "primereact/confirmdialog"
 import { Toast } from "primereact/toast"
 import Delete from "./Delete"
+import moment from "moment"
+
 
 const TableTenant = ({ data, meta }: { data: TenantInterface[], meta?: MetaInterface }) => {
     const column: ColumnMetaInterface[] = [
@@ -17,6 +19,7 @@ const TableTenant = ({ data, meta }: { data: TenantInterface[], meta?: MetaInter
         { field: 'phone', header: 'Phone' },
         { field: 'occupation', header: 'Occupation' }
     ]
+    const [tenants, setTenants] = useState<TenantInterface[]>(data)
     const toast = useRef<Toast>(null);
     const actionColumn = (item: TenantInterface) => {
         return (
@@ -24,23 +27,46 @@ const TableTenant = ({ data, meta }: { data: TenantInterface[], meta?: MetaInter
                 <PrimeButton tooltip="Show" tooltipOptions={{ showDelay: 500, position: 'bottom' }} severity="info" icon="pi pi-eye"></PrimeButton>
                 <PrimeButton tooltip="Edit" tooltipOptions={{ showDelay: 500, position: 'bottom' }} severity="warning" icon="pi pi-pencil"></PrimeButton>
                 {item.deleted_at != null
-                    ? <Restore item={item} toastMessage={(message) => toast.current?.show(message)} />
-                    : <Delete item={item} toastMessage={(message) => toast.current?.show(message)} />
+                    ? <Restore item={item} toastMessage={(message) => {
+                        setTenants([...tenants.map((tenant, index) => {
+                            if (tenant.id == item.id) {
+                                tenant.deleted_at = null
+                            }
+                            return tenant
+                        })])
+                        toast.current?.show(message)
+                    }} />
+                    : <Delete item={item} toastMessage={(message) => {
+                        setTenants([...tenants.map((tenant, index) => {
+                            if (tenant.id == item.id) {
+                                tenant.deleted_at = moment().format('Y-MM-D');
+                                console.log(tenant.deleted_at)
+                            }
+                            return tenant
+                        })])
+                        toast.current?.show(message)
+                    }} />
                 }
             </div>
         )
+    }
+    const paginateHandle = (data: PaginatorPageChangeEvent) => {
+        console.log(data)
+        const page = data.page + 1
+        console.log(meta.links.find((link)=>(link.label==page.toString())))
     }
     return (
         <>
             <Toast ref={toast} position="bottom-right" />
             <ConfirmDialog />
-            <Table value={data}>
+            <Table value={tenants}>
                 {column.map((item, key) => (
                     <Td field={item.field} header={item.header} key={key} />
                 ))}
                 <Td header="Action" body={actionColumn}></Td>
             </Table>
-            <Paginator first={meta.from} rows={meta.to} totalRecords={meta.total} rowsPerPageOptions={[50, 100]} onPageChange={(e) => { console.log(e) }} />
+            <Paginator first={meta.current_page} rows={meta.to} totalRecords={meta.total} 
+            onPageChange={paginateHandle} />
         </>
     )
 }
