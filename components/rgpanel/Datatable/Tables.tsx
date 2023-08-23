@@ -8,9 +8,11 @@ interface TableInterface extends DataTableProps<DataTableValueArray> {
 interface TdInterface extends ColumnProps {
     children?: React.ReactNode
 }
-export const Table: React.FC<TableInterface> = ({ children, ...rest }) => {
+export const Table: React.FC<TableInterface> = ({ children,  ...rest }) => {
+
     return (
-        <DataTable stripedRows size='small' showGridlines className="rounded" {...rest}>
+        <DataTable stripedRows size='small' className="rounded"
+            {...rest}>
             {children}
         </DataTable>
     )

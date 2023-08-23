@@ -15,7 +15,8 @@ import UserJwtInterface from "@/utils/Interfaces/UserJwtInterface"
 import { useSession } from "next-auth/react"
 import LinkInterface from "@/utils/Interfaces/paginator/LinkInterface"
 import TenantColumn from "./TenantColumn"
-
+import { DataTableSortEvent } from "primereact/datatable"
+import Search from "@/components/rgpanel/Datatable/Search"
 
 const getTenantList = async (session: any, url: string) => {
     const { user }: { user: UserJwtInterface } = session
@@ -74,15 +75,28 @@ const TableTenant = ({ data, meta }: { data: TenantInterface[], meta?: MetaInter
         setTenants(res.data)
         setMetaPaginator(res.meta)
     }
+    const [lazySort, setLazySort] = useState<DataTableSortEvent>()
+
     return (
         <>
             <Toast ref={toast} position="bottom-right" />
             <ConfirmDialog />
-            <Table value={tenants} resizableColumns >
-                <Td header="Action" body={actionColumn}></Td>
+            <Table value={tenants} 
+                resizableColumns
+                scrollable
+                onSort={(e: DataTableSortEvent) => {
+                    console.log(e)
+                    setLazySort(e)
+                }}
+                sortField={lazySort?.sortField}
+                sortOrder={lazySort?.sortOrder}
+                header={<Search/>}
+                >          
+                <Td header="Action" frozen body={actionColumn}></Td>      
                 {column.map((item, key) => (
-                    <Td field={item.field} header={item.header} key={key} style={{ width: item?.width }} />
+                    <Td field={item.field} sortable header={item.header} key={key} style={{ width: item?.width }} />
                 ))}
+               
             </Table>
             <Paginator
                 first={metaPaginator.from}

@@ -13,11 +13,11 @@ const TenantColumn: ColumnMetaInterface[] = [
     { field: 'school', header: 'School' },
     { field: 'workplace_address', header: 'Workplace Address' },
     { field: 'school_address', header: 'School Address' },
-    { field: 'identification_document_filename', header: 'Identification Document Filename' },
+    // { field: 'identification_document_filename', header: 'Identification Document Filename' },
     { field: 'emergency_contact_name', header: 'Emergency Contact Name' },
     { field: 'emergency_contact_phone', header: 'Emergency Contact Phone' },
     { field: 'created_at', header: 'Created At' },
     { field: 'updated_at', header: 'Updated At' },
-    { field: 'deleted_at', header: 'Deleted At' }
+    // { field: 'deleted_at', header: 'Deleted At' }
 ];
 export default TenantColumn
