@@ -10,7 +10,7 @@ import Image from 'next/image';
 import authImage from 'public/images/auth-bg.avif'
 import { H1 } from '@/components/core/Headings/Headings';
 import 'primeicons/primeicons.css';
-import ReactQueryClientProvider from '@/components/ReactQueryProvider/ReactQueryClientProvide';
+
 export const metadata: Metadata = {
     title: 'Simkos Landing',
     icons: '/rg-x1.png',
@@ -23,7 +23,7 @@ export default function RootLayout({
     return (
         <html lang='en'>
             <PrimeProvider>
-                <ReactQueryClientProvider>
+              
                     <body className={`${ALBERT_SANS.className} ${layout.layout}`}>
                         <main className='grid md:grid-cols-2 bg-white overflow-hidden rounded-lg shadow-lg h-[90vh] mt-5'>
                             <div className='relative md:h-full w-full '>
@@ -36,7 +36,7 @@ export default function RootLayout({
                         </main>
                         <Footer />
                     </body>
-                </ReactQueryClientProvider>
+                
             </PrimeProvider>
         </html>
     );

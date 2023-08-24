@@ -26,7 +26,7 @@ const Page = async () => {
 
     return (
         <div>
-            <TableTenant data={data} meta={meta} />
+            <TableTenant initialData={{data,meta}} />
         </div>
     )
 }

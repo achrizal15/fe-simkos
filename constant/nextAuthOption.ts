@@ -1,14 +1,15 @@
 import { NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+// import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import UserJwtInterface from "@/utils/Interfaces/UserJwtInterface";
+import { redirect } from "next/dist/server/api-utils";
 
 const nextAuthOptions: NextAuthOptions = {
     providers: [
-        GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET
-        }),
+        // GoogleProvider({
+        //     clientId: process.env.GOOGLE_CLIENT_ID,
+        //     clientSecret: process.env.GOOGLE_CLIENT_SECRET
+        // }),
         CredentialsProvider({
             id: 'credentials',
             name: 'Credentials',

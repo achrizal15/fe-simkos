@@ -17,28 +17,36 @@ import LinkInterface from "@/utils/Interfaces/paginator/LinkInterface"
 import TenantColumn from "./TenantColumn"
 import { DataTableSortEvent } from "primereact/datatable"
 import Search from "@/components/rgpanel/Datatable/Search"
-
-const getTenantList = async (session: any, url: string) => {
+import useSWR from "swr"
+const getTenantList = async (url: string, session: any) => {
     const { user }: { user: UserJwtInterface } = session
-    const res = await fetch(url, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}`, {
         headers: {
             'Content-type': 'application/json',
             Accept: 'application/json',
             Authorization: `Bearer ${user.token}`
         },
-        cache: 'no-store'
     })
     if (res.status != 200) {
         throw new Error('Failed to fetch data')
     }
-    return await res.json()
+    return res.json()
 }
-const TableTenant = ({ data, meta }: { data: TenantInterface[], meta?: MetaInterface }) => {
+const TableTenant = ({ initialData }: { initialData: { data: TenantInterface[], meta: MetaInterface } }) => {
     const toast = useRef<Toast>(null);
     const session = useSession()
+    const [page, setPage] = useState<number>(initialData.meta.current_page)
+    const { data, isLoading, mutate, isValidating } = useSWR(`tenants?page=${page}`,
+        async (arg) => getTenantList(arg, session.data),
+        {
+            fallbackData: initialData,
+            revalidateOnFocus: false,
+            revalidateOnMount: true,
+        })
+    const meta: MetaInterface = data.meta
+    const tenants: TenantInterface[] = data.data
     const column: ColumnMetaInterface[] = TenantColumn
-    const [tenants, setTenants] = useState<TenantInterface[]>(data)
-    const [metaPaginator, setMetaPaginator] = useState<MetaInterface>(meta)
+
     const actionColumn = (item: TenantInterface) => {
         return (
             <div className="gap-2 flex justify-center items-center">
@@ -46,22 +54,29 @@ const TableTenant = ({ data, meta }: { data: TenantInterface[], meta?: MetaInter
                 <PrimeButton tooltip="Edit" tooltipOptions={{ showDelay: 500, position: 'bottom' }} severity="warning" icon="pi pi-pencil"></PrimeButton>
                 {item.deleted_at != null
                     ? <Restore item={item} toastMessage={(message) => {
-                        setTenants([...tenants.map((tenant, index) => {
-                            if (tenant.id == item.id) {
-                                tenant.deleted_at = null
-                            }
-                            return tenant
-                        })])
+                   
+                        mutate({
+                            data: tenants.map((tenant: TenantInterface) => {
+                                if (tenant.id == item.id) {
+                                    tenant.deleted_at = null
+                                }
+                                return tenant
+                            }),
+                            meta
+                        }, false)
+                        console.log(data)
                         toast.current?.show(message)
                     }} />
                     : <Delete item={item} toastMessage={(message) => {
-                        setTenants([...tenants.map((tenant, index) => {
-                            if (tenant.id == item.id) {
-                                tenant.deleted_at = moment().format('Y-MM-D');
-                                console.log(tenant.deleted_at)
-                            }
-                            return tenant
-                        })])
+                        mutate({
+                            data: tenants.map((tenant: TenantInterface) => {
+                                if (tenant.id == item.id) {
+                                    tenant.deleted_at = moment().format('Y-MM-D');
+                                }
+                                return tenant
+                            }),
+                            meta
+                        }, true)
                         toast.current?.show(message)
                     }} />
                 }
@@ -70,40 +85,41 @@ const TableTenant = ({ data, meta }: { data: TenantInterface[], meta?: MetaInter
     }
     const paginateHandle = async (data: PaginatorPageChangeEvent) => {
         const page = data.page + 1
-        const link: LinkInterface = metaPaginator.links.find((link) => (link.label == page.toString()))
-        const res = await getTenantList(session.data, link.url)
-        setTenants(res.data)
-        setMetaPaginator(res.meta)
+        setPage(page)
     }
     const [lazySort, setLazySort] = useState<DataTableSortEvent>()
-
+    console.log(isValidating)
     return (
         <>
             <Toast ref={toast} position="bottom-right" />
             <ConfirmDialog />
-            <Table value={tenants} 
+            <Table value={tenants}
                 resizableColumns
                 scrollable
                 onSort={(e: DataTableSortEvent) => {
-                    console.log(e)
                     setLazySort(e)
                 }}
                 sortField={lazySort?.sortField}
                 sortOrder={lazySort?.sortOrder}
-                header={<Search/>}
-                >          
-                <Td header="Action" frozen body={actionColumn}></Td>      
+                loading={isValidating}
+                header={<Search />}
+            >
+                <Td header="Action" frozen body={actionColumn}></Td>
                 {column.map((item, key) => (
                     <Td field={item.field} sortable header={item.header} key={key} style={{ width: item?.width }} />
                 ))}
-               
+
             </Table>
-            <Paginator
-                first={metaPaginator.from}
-                rows={metaPaginator.per_page}
-                totalRecords={metaPaginator.total}
-                onPageChange={paginateHandle}
-            />
+            {
+                !isValidating &&
+                <Paginator
+                    first={meta.from}
+                    rows={meta.per_page}
+                    totalRecords={meta.total}
+                    onPageChange={paginateHandle}
+                />
+            }
+
         </>
     )
 }
