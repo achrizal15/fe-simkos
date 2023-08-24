@@ -17,6 +17,7 @@ import LinkInterface from "@/utils/Interfaces/paginator/LinkInterface"
 import TenantColumn from "./TenantColumn"
 import { DataTableSortEvent } from "primereact/datatable"
 import Search from "@/components/rgpanel/Datatable/Search"
+import { useQuery } from "react-query"
 
 const getTenantList = async (session: any, url: string) => {
     const { user }: { user: UserJwtInterface } = session
@@ -39,6 +40,12 @@ const TableTenant = ({ data, meta }: { data: TenantInterface[], meta?: MetaInter
     const column: ColumnMetaInterface[] = TenantColumn
     const [tenants, setTenants] = useState<TenantInterface[]>(data)
     const [metaPaginator, setMetaPaginator] = useState<MetaInterface>(meta)
+    const { data: test, isLoading, isFetching } = useQuery('tenants', () => getTenantList(session.data, `${process.env.NEXT_PUBLIC_API_URL}/tenants`), {
+        refetchOnWindowFocus: false,
+        refetchOnMount:false,
+        initialData: { data, meta },
+    })
+    console.log(test)
     const actionColumn = (item: TenantInterface) => {
         return (
             <div className="gap-2 flex justify-center items-center">
@@ -81,7 +88,7 @@ const TableTenant = ({ data, meta }: { data: TenantInterface[], meta?: MetaInter
         <>
             <Toast ref={toast} position="bottom-right" />
             <ConfirmDialog />
-            <Table value={tenants} 
+            <Table value={tenants}
                 resizableColumns
                 scrollable
                 onSort={(e: DataTableSortEvent) => {
@@ -90,13 +97,13 @@ const TableTenant = ({ data, meta }: { data: TenantInterface[], meta?: MetaInter
                 }}
                 sortField={lazySort?.sortField}
                 sortOrder={lazySort?.sortOrder}
-                header={<Search/>}
-                >          
-                <Td header="Action" frozen body={actionColumn}></Td>      
+                header={<Search />}
+            >
+                <Td header="Action" frozen body={actionColumn}></Td>
                 {column.map((item, key) => (
                     <Td field={item.field} sortable header={item.header} key={key} style={{ width: item?.width }} />
                 ))}
-               
+
             </Table>
             <Paginator
                 first={metaPaginator.from}
