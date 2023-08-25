@@ -22,8 +22,8 @@ export default function RootLayout({
 }) {
     return (
         <html lang='en'>
-                <ReactQueryClientProvider>
-            <PrimeProvider>
+            <ReactQueryClientProvider>
+                <PrimeProvider>
                     <body className={`${ALBERT_SANS.className} ${layout.layout}`}>
                         <main className='grid md:grid-cols-2 bg-white overflow-hidden rounded-lg shadow-lg h-[90vh] mt-5'>
                             <div className='relative md:h-full w-full '>
@@ -36,8 +36,8 @@ export default function RootLayout({
                         </main>
                         <Footer />
                     </body>
-            </PrimeProvider>
-                </ReactQueryClientProvider>
+                </PrimeProvider>
+            </ReactQueryClientProvider>
         </html>
     );
 }

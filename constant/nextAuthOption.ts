@@ -17,7 +17,7 @@ const nextAuthOptions: NextAuthOptions = {
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                try {
+                // try {
                     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
                         method: 'POST',
                         headers: {
@@ -29,11 +29,12 @@ const nextAuthOptions: NextAuthOptions = {
                         const data = await res.json();
                         return { ...data.user, token: data.token };
                     }
+                    console.log(res)
                     return null
-                } catch (error) {
-                    console.log(error)
-                    return null
-                }
+                // } catch (error) {
+                //     console.log(error)
+                //     return null
+                // }
             }
         }),
     ],
