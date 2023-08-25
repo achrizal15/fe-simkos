@@ -23,12 +23,12 @@ const getTenantList = async () => {
 }
 
 const Page = async () => {
-    const { data, meta }: { data: TenantInterface[], meta: MetaInterface } = await getTenantList()
+    const initialData: { data: TenantInterface[], meta: MetaInterface } = await getTenantList()
 
     return (
         <div>
             <ReactQueryClientProvider>
-            <TableTenant data={data} meta={meta} />
+                <TableTenant initialData={initialData} />
             </ReactQueryClientProvider>
         </div>
     )

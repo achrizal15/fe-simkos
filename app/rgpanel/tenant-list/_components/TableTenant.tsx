@@ -17,11 +17,15 @@ import LinkInterface from "@/utils/Interfaces/paginator/LinkInterface"
 import TenantColumn from "./TenantColumn"
 import { DataTableSortEvent } from "primereact/datatable"
 import Search from "@/components/rgpanel/Datatable/Search"
-import { useQuery } from "react-query"
+import { useQuery, useQueryClient } from "react-query"
+import WithTrash from "@/components/rgpanel/Datatable/WithTrash"
+import QueryStringKeyInterface from "@/utils/Interfaces/paginator/QueryStringKeyInterface"
+import objectToQueryString from "@/constant/objectToQueryString"
+
 
 const getTenantList = async (session: any, url: string) => {
     const { user }: { user: UserJwtInterface } = session
-    const res = await fetch(url, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}`, {
         headers: {
             'Content-type': 'application/json',
             Accept: 'application/json',
@@ -34,54 +38,42 @@ const getTenantList = async (session: any, url: string) => {
     }
     return await res.json()
 }
-const TableTenant = ({ data, meta }: { data: TenantInterface[], meta?: MetaInterface }) => {
+
+const TableTenant = ({ initialData }: { initialData: { data: TenantInterface[], meta?: MetaInterface } }) => {
     const toast = useRef<Toast>(null);
     const session = useSession()
     const column: ColumnMetaInterface[] = TenantColumn
-    const [tenants, setTenants] = useState<TenantInterface[]>(data)
-    const [metaPaginator, setMetaPaginator] = useState<MetaInterface>(meta)
-    const { data: test, isLoading, isFetching } = useQuery('tenants', () => getTenantList(session.data, `${process.env.NEXT_PUBLIC_API_URL}/tenants`), {
-        refetchOnWindowFocus: false,
-        refetchOnMount:false,
-        initialData: { data, meta },
+    const [queryKey, setQueryKey] = useState<QueryStringKeyInterface>({
+        page: initialData.meta.current_page,
+        withTrash: false
     })
-    console.log(test)
+    const paginateHandle = async (data: PaginatorPageChangeEvent) => {
+        const page = data.page + 1
+        setQueryKey({...queryKey,page:page})
+    }
+    const { data, isLoading, isFetching } = useQuery(objectToQueryString(queryKey), () => getTenantList(session.data, `tenants?${objectToQueryString(queryKey)}`), {
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        initialData: initialData,
+    })
+    const { data: tenants, meta }: { data: TenantInterface[], meta: MetaInterface } = data
     const actionColumn = (item: TenantInterface) => {
         return (
             <div className="gap-2 flex justify-center items-center">
                 <PrimeButton tooltip="Show" tooltipOptions={{ showDelay: 500, position: 'bottom' }} severity="info" icon="pi pi-eye"></PrimeButton>
                 <PrimeButton tooltip="Edit" tooltipOptions={{ showDelay: 500, position: 'bottom' }} severity="warning" icon="pi pi-pencil"></PrimeButton>
                 {item.deleted_at != null
-                    ? <Restore item={item} toastMessage={(message) => {
-                        setTenants([...tenants.map((tenant, index) => {
-                            if (tenant.id == item.id) {
-                                tenant.deleted_at = null
-                            }
-                            return tenant
-                        })])
+                    ? <Restore item={item} queryKey={objectToQueryString(queryKey)} toastMessage={(message) => {
                         toast.current?.show(message)
                     }} />
-                    : <Delete item={item} toastMessage={(message) => {
-                        setTenants([...tenants.map((tenant, index) => {
-                            if (tenant.id == item.id) {
-                                tenant.deleted_at = moment().format('Y-MM-D');
-                                console.log(tenant.deleted_at)
-                            }
-                            return tenant
-                        })])
+                    : <Delete queryKey={objectToQueryString(queryKey)} item={item} toastMessage={(message) => {
                         toast.current?.show(message)
                     }} />
                 }
             </div>
         )
     }
-    const paginateHandle = async (data: PaginatorPageChangeEvent) => {
-        const page = data.page + 1
-        const link: LinkInterface = metaPaginator.links.find((link) => (link.label == page.toString()))
-        const res = await getTenantList(session.data, link.url)
-        setTenants(res.data)
-        setMetaPaginator(res.meta)
-    }
+
     const [lazySort, setLazySort] = useState<DataTableSortEvent>()
 
     return (
@@ -97,18 +89,25 @@ const TableTenant = ({ data, meta }: { data: TenantInterface[], meta?: MetaInter
                 }}
                 sortField={lazySort?.sortField}
                 sortOrder={lazySort?.sortOrder}
-                header={<Search />}
+                header={
+                    <div className="flex items-center gap-2">
+                        <Search  onChange={(event)=>setQueryKey({...queryKey,search:event.target.value})}/>
+                        <WithTrash onChange={(value)=>{
+                            setQueryKey({...queryKey,withTrash:value})
+                        }}/>
+                    </div>
+                }
             >
-                <Td header="Action" frozen body={actionColumn}></Td>
+                <Td header="Aksi" frozen body={actionColumn}></Td>
                 {column.map((item, key) => (
                     <Td field={item.field} sortable header={item.header} key={key} style={{ width: item?.width }} />
                 ))}
 
             </Table>
             <Paginator
-                first={metaPaginator.from}
-                rows={metaPaginator.per_page}
-                totalRecords={metaPaginator.total}
+                first={meta.from}
+                rows={meta.per_page}
+                totalRecords={meta.total}
                 onPageChange={paginateHandle}
             />
         </>
