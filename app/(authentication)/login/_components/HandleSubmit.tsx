@@ -11,18 +11,10 @@ const FormLoginSubmit = ({ children }: { children: React.ReactNode }) => {
         data.preventDefault();
         const credentials = data.target[0].value
         const password = data.target[1].value
-        const loginCredentials = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({credentials,password}),
-        });
-        // const loginCredentials = await signIn('credentials', { credentials, password, callbackUrl: '/rgpanel', redirect: false })
-        // if (loginCredentials.error == null) {
-        //     return loginCredentials
-        // }
-        console.log(await loginCredentials.json())
+        const loginCredentials = await signIn('credentials', { credentials, password, callbackUrl: '/rgpanel', redirect: false })
+        if (loginCredentials.error == null) {
+            return loginCredentials
+        }
         throw new Error("Invalid credentials");
     }
     const { mutate, isLoading, error,isSuccess } = useMutation(submit,{
