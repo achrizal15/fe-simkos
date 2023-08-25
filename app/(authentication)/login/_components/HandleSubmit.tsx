@@ -15,7 +15,7 @@ const FormLoginSubmit = ({ children }: { children: React.ReactNode }) => {
         if (loginCredentials.error == null) {
             return loginCredentials
         }
-        throw new Error("Invalid credentials");
+        throw new Error(loginCredentials.error);
     }
     const { mutate, isLoading, error,isSuccess } = useMutation(submit,{
         onSuccess:(data)=>{
@@ -24,14 +24,7 @@ const FormLoginSubmit = ({ children }: { children: React.ReactNode }) => {
     })
     const handleSubmit = async (data: React.FormEvent<HTMLFormElement>) => {
         data.preventDefault();
-        const credentials = data.target[0].value
-        const password = data.target[1].value
-        const loginCredentials = await signIn('credentials', { credentials, password, callbackUrl: '/rgpanel', redirect: true })
-        if (loginCredentials.error == null) {
-            return loginCredentials
-        }
-        console.log(loginCredentials)
-        // mutate(data)
+        mutate(data)
     };
     return (
         <form onSubmit={handleSubmit} className="mt-5 w-full">
