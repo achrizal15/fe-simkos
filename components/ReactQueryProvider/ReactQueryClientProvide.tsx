@@ -3,13 +3,13 @@ import {
     QueryClient,
     QueryClientProvider
 } from 'react-query';
-import {ReactQueryDevtools} from 'react-query/devtools'
+// import {ReactQueryDevtools} from 'react-query/devtools'
 const queryClient = new QueryClient();
 const ReactQueryClientProvider = ({ children }: { children: React.ReactNode }) => {
     return (
         <QueryClientProvider client={queryClient}>
             {children}
-            <ReactQueryDevtools/>
+            {/* <ReactQueryDevtools/> */}
         </QueryClientProvider>
     )
 }
