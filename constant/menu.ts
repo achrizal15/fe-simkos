@@ -3,186 +3,188 @@ import SidebarMenuItemInterface from "utils/Interfaces/SidebarMenuItemInterface"
 
 const FronEndMenu: MenuItemInterface[] = [
     {
-        title: 'Home',
+        title: 'Beranda',
         url: '/',
         sub_menu: null,
     },
     {
-        title: 'Rooms',
+        title: 'Kamar',
         url: '/rooms',
         sub_menu: null,
     },
     {
-        title: 'Reservation',
+        title: 'Reservasi',
         url: '/reservation',
         sub_menu: null,
     },
     {
-        title: 'Features',
+        title: 'Fitur',
         url: '/features',
         sub_menu: null,
     },
     {
-        title: 'About',
+        title: 'Tentang',
         url: '/about',
         sub_menu: null,
     },
     {
-        title: 'Contact',
+        title: 'Kontak',
         url: '/contact',
         sub_menu: null,
     },
 ];
+
 const RgPanelSidebarMenu: SidebarMenuItemInterface[] = [
     {
         label: 'Dashboard',
         icon: 'pi pi-fw pi-home',
-        url:"/rgpanel",
+        url: "/rgpanel",
         items: []
     },
     {
-        label: 'Tenant Management',
+        label: 'Manajemen Penyewa',
         icon: 'pi pi-fw pi-users',
-        url:null,
+        url: null,
         items: [
             {
-                label: 'Tenant List',
+                label: 'Daftar Penyewa',
                 icon: 'pi pi-fw pi-list',
-                url:"/rgpanel/tenant-list",
+                url: "/rgpanel/tenant",
                 items: []
             },
             {
-                label: 'Add New Tenant',
+                label: 'Tambah Penyewa Baru',
                 icon: 'pi pi-fw pi-user-plus',
-                url:"/rgp",
+                url: "/rgpanel/tenants/form",
                 items: []
             }
         ]
     },
     {
-        label: 'Room Management',
+        label: 'Manajemen Kamar',
         icon: 'pi pi-fw pi-desktop',
-        url:"/rgp",
+        url: "/rgp",
         items: [
             {
-                label: 'Room List',
+                label: 'Daftar Kamar',
                 icon: 'pi pi-fw pi-list',
-                url:"/rgp",
+                url: "/rgp",
                 items: []
             },
             {
-                label: 'Add New Room',
+                label: 'Tambah Kamar Baru',
                 icon: 'pi pi-fw pi-plus',
-                url:"/rgp",
+                url: "/rgp",
                 items: []
             },
             {
-                label: 'Room Prices',
+                label: 'Harga Kamar',
                 icon: 'pi pi-fw pi-money-bill',
-                url:"/rgp",
+                url: "/rgp",
                 items: []
             },
             {
-                label: 'Room Features',
+                label: 'Fitur Kamar',
                 icon: 'pi pi-fw pi-cog',
-                url:"/rgp",
+                url: "/rgp",
                 items: []
             }
         ]
     },
     {
-        label: 'Invoice & Billing',
+        label: 'Tagihan & Faktur',
         icon: 'pi pi-fw pi-file',
-        url:"/rgp",
+        url: "/rgp",
         items: [
             {
-                label: 'Invoice List',
+                label: 'Daftar Faktur',
                 icon: 'pi pi-fw pi-list',
-                url:"/rgp",
+                url: "/rgp",
                 items: []
             },
             {
-                label: 'Create Manual Invoice',
+                label: 'Buat Faktur Manual',
                 icon: 'pi pi-fw pi-pencil',
-                url:"/rgp",
+                url: "/rgp",
                 items: []
             },
             {
-                label: 'Automatic Billing Setup',
+                label: 'Pengaturan Penagihan Otomatis',
                 icon: 'pi pi-fw pi-cog',
-                url:"/rgp",
+                url: "/rgp",
                 items: []
             }
         ]
     },
     {
-        label: 'Maintenance',
+        label: 'Pemeliharaan',
         icon: 'pi pi-fw pi-wrench',
-        url:"/rgp",
+        url: "/rgp",
         items: [
             {
-                label: 'Repair Logs',
+                label: 'Catatan Perbaikan',
                 icon: 'pi pi-fw pi-list',
-                url:"/rgp",
+                url: "/rgp",
                 items: []
             },
             {
-                label: 'Maintenance Logs',
+                label: 'Catatan Pemeliharaan',
                 icon: 'pi pi-fw pi-list',
-                url:"/rgp",
+                url: "/rgp",
                 items: []
             },
             {
-                label: 'Maintenance Expenses',
+                label: 'Biaya Pemeliharaan',
                 icon: 'pi pi-fw pi-dollar',
-                url:"/rgp",
+                url: "/rgp",
                 items: []
             }
         ]
     },
     {
-        label: 'Finance',
+        label: 'Keuangan',
         icon: 'pi pi-fw pi-chart-bar',
-        url:"/rgp",
+        url: "/rgp",
         items: [
             {
-                label: 'Income Reports',
+                label: 'Laporan Pendapatan',
                 icon: 'pi pi-fw pi-chart-line',
-                url:"/rgp",
+                url: "/rgp",
                 items: []
             },
             {
-                label: 'Expense Reports',
+                label: 'Laporan Pengeluaran',
                 icon: 'pi pi-fw pi-chart-bar',
-                url:"/rgp",
+                url: "/rgp",
                 items: []
             },
             {
-                label: 'Financial Overview',
+                label: 'Gambaran Keuangan',
                 icon: 'pi pi-fw pi-chart-pie',
-                url:"/rgp",
+                url: "/rgp",
                 items: []
             }
         ]
     },
     {
-        label: 'Complaint Management',
+        label: 'Manajemen Keluhan',
         icon: 'pi pi-fw pi-exclamation-triangle',
-        url:"/rgp",
+        url: "/rgp",
         items: [
             {
-                label: 'Complaint List',
+                label: 'Daftar Keluhan',
                 icon: 'pi pi-fw pi-list',
-                url:"/rgp",
+                url: "/rgp",
                 items: []
             },
             {
-                label: 'New Complaint Report',
+                label: 'Laporan Keluhan Baru',
                 icon: 'pi pi-fw pi-plus',
-                url:"/rgp",
+                url: "/rgp",
                 items: []
             }
         ]
     }
 ];
+
 export { FronEndMenu,RgPanelSidebarMenu }

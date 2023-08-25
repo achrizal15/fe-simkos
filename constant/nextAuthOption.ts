@@ -29,6 +29,7 @@ const nextAuthOptions: NextAuthOptions = {
                         const data = await res.json();
                         return { ...data.user, token: data.token };
                     }
+                   
                     return null
             }
         }),
