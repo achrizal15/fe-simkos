@@ -31,7 +31,7 @@ const getTenantList = async (session: any, url: string) => {
         cache: 'no-store'
     })
     if (res.status != 200) {
-        throw new Error('Failed to fetch data')
+        throw new Error(res.statusText)
     }
     return await res.json()
 }
