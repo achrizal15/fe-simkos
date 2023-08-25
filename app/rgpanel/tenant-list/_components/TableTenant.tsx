@@ -5,23 +5,20 @@ import ColumnMetaInterface from "@/utils/Interfaces/ColumnMetaInterface"
 import TenantInterface from "@/utils/Interfaces/TenantItemInterface"
 import MetaInterface from "@/utils/Interfaces/paginator/MetaInterface"
 import React, { useRef, useState } from 'react';
-import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator"
-import Restore from "./Restore"
+import { Paginator } from "primereact/paginator"
 import { ConfirmDialog } from "primereact/confirmdialog"
 import { Toast } from "primereact/toast"
-import Delete from "./Delete"
-import moment from "moment"
 import UserJwtInterface from "@/utils/Interfaces/UserJwtInterface"
 import { useSession } from "next-auth/react"
-import LinkInterface from "@/utils/Interfaces/paginator/LinkInterface"
 import TenantColumn from "./TenantColumn"
 import { DataTableSortEvent } from "primereact/datatable"
 import Search from "@/components/rgpanel/Datatable/Search"
-import { useQuery, useQueryClient } from "react-query"
+import { useQuery } from "react-query"
 import WithTrash from "@/components/rgpanel/Datatable/WithTrash"
 import QueryStringKeyInterface from "@/utils/Interfaces/paginator/QueryStringKeyInterface"
 import objectToQueryString from "@/constant/objectToQueryString"
-
+import ActionHandle from "./ActionHandle"
+import Exports from "@/components/rgpanel/Datatable/Exports"
 
 const getTenantList = async (session: any, url: string) => {
     const { user }: { user: UserJwtInterface } = session
@@ -47,34 +44,14 @@ const TableTenant = ({ initialData }: { initialData: { data: TenantInterface[], 
         page: initialData.meta.current_page,
         withTrash: false
     })
-    const paginateHandle = async (data: PaginatorPageChangeEvent) => {
-        const page = data.page + 1
-        setQueryKey({...queryKey,page:page})
-    }
-    const { data, isLoading, isFetching } = useQuery(objectToQueryString(queryKey), () => getTenantList(session.data, `tenants?${objectToQueryString(queryKey)}`), {
+
+    const { data, isFetching } = useQuery(objectToQueryString(queryKey), () => getTenantList(session.data, `tenants?${objectToQueryString(queryKey)}`), {
         refetchOnWindowFocus: false,
         refetchOnMount: false,
         initialData: initialData,
     })
     const { data: tenants, meta }: { data: TenantInterface[], meta: MetaInterface } = data
-    const actionColumn = (item: TenantInterface) => {
-        return (
-            <div className="gap-2 flex justify-center items-center">
-                <PrimeButton tooltip="Show" tooltipOptions={{ showDelay: 500, position: 'bottom' }} severity="info" icon="pi pi-eye"></PrimeButton>
-                <PrimeButton tooltip="Edit" tooltipOptions={{ showDelay: 500, position: 'bottom' }} severity="warning" icon="pi pi-pencil"></PrimeButton>
-                {item.deleted_at != null
-                    ? <Restore item={item} queryKey={objectToQueryString(queryKey)} toastMessage={(message) => {
-                        toast.current?.show(message)
-                    }} />
-                    : <Delete queryKey={objectToQueryString(queryKey)} item={item} toastMessage={(message) => {
-                        toast.current?.show(message)
-                    }} />
-                }
-            </div>
-        )
-    }
 
-    const [lazySort, setLazySort] = useState<DataTableSortEvent>()
 
     return (
         <>
@@ -83,22 +60,21 @@ const TableTenant = ({ initialData }: { initialData: { data: TenantInterface[], 
             <Table value={tenants}
                 resizableColumns
                 scrollable
-                onSort={(e: DataTableSortEvent) => {
-                    console.log(e)
-                    setLazySort(e)
-                }}
-                sortField={lazySort?.sortField}
-                sortOrder={lazySort?.sortOrder}
+                onSort={(e: DataTableSortEvent) => setQueryKey({ ...queryKey, sortField: e.sortField, sortOrder: e.sortOrder })}
+                sortField={queryKey?.sortField}
+                sortOrder={queryKey?.sortOrder}
+                loading={isFetching}
                 header={
-                    <div className="flex items-center gap-2">
-                        <Search  onChange={(event)=>setQueryKey({...queryKey,search:event.target.value})}/>
-                        <WithTrash onChange={(value)=>{
-                            setQueryKey({...queryKey,withTrash:value})
-                        }}/>
+                    <div className="flex justify-between items-center flex-wrap gap-2">
+                        <Search placeholder="Cari nama, no.hp, email" debounce={(value) => setQueryKey({ ...queryKey, page: initialData.meta.current_page, search: value })} />
+                        <div className="flex justify-between w-full md:w-auto md:justify-start flex-wrap items-center gap-2">
+                            <WithTrash onChange={(value) => setQueryKey({ ...queryKey, withTrash: value })} />
+                            <Exports />
+                        </div>
                     </div>
                 }
             >
-                <Td header="Aksi" frozen body={actionColumn}></Td>
+                <Td header="Aksi" frozen body={(item) => <ActionHandle item={item} queryKey={queryKey} toast={toast} />}></Td>
                 {column.map((item, key) => (
                     <Td field={item.field} sortable header={item.header} key={key} style={{ width: item?.width }} />
                 ))}
@@ -108,7 +84,7 @@ const TableTenant = ({ initialData }: { initialData: { data: TenantInterface[], 
                 first={meta.from}
                 rows={meta.per_page}
                 totalRecords={meta.total}
-                onPageChange={paginateHandle}
+                onPageChange={(paginateData) => setQueryKey({ ...queryKey, page: paginateData.page + 1 })}
             />
         </>
     )
