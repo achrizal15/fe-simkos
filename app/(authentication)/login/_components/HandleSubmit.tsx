@@ -22,9 +22,16 @@ const FormLoginSubmit = ({ children }: { children: React.ReactNode }) => {
            navigate.push('/rgpanel')
         }
     })
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        mutate(event)
+    const handleSubmit = async (data: React.FormEvent<HTMLFormElement>) => {
+        data.preventDefault();
+        const credentials = data.target[0].value
+        const password = data.target[1].value
+        const loginCredentials = await signIn('credentials', { credentials, password, callbackUrl: '/rgpanel', redirect: true })
+        if (loginCredentials.error == null) {
+            return loginCredentials
+        }
+        console.log(loginCredentials)
+        // mutate(data)
     };
     return (
         <form onSubmit={handleSubmit} className="mt-5 w-full">
