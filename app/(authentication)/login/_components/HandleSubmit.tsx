@@ -22,7 +22,7 @@ const FormLoginSubmit = ({ children }: { children: React.ReactNode }) => {
         // if (loginCredentials.error == null) {
         //     return loginCredentials
         // }
-        console.log(loginCredentials)
+        console.log(await loginCredentials.json())
         throw new Error("Invalid credentials");
     }
     const { mutate, isLoading, error,isSuccess } = useMutation(submit,{
