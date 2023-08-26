@@ -34,9 +34,9 @@ const DynamicBreadCrumb = () => {
 
     const iconItemTemplate = (item: MenuItem, options: MenuItemOptions) => {
         return (
-            <Link href={item.url} className={`focus:outline-none ring-0 border-0 gap-2 flex items-center`}>
+            <Link href={item.url} className={`focus:outline-none ring-0 border-0 gap-2 flex items-center flex-nowrap`}>
                 <span className={item.icon}></span>
-                <span>
+                <span className="whitespace-nowrap">
                     {item.label}
                 </span>
             </Link>

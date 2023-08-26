@@ -7,6 +7,7 @@ import PrimeInputMask from "@/components/core/Input/PrimeInputMask"
 import PrimeInputText from "@/components/core/Input/PrimeInputText"
 import IdentificationDocumentSelect from "./_components/IdentificationDocumentSelect"
 import PrimeTextArea from "@/components/core/Input/PrimeTextArea"
+import PrimeButton from "@/components/core/Button/PrimeButton"
 
 const Form = () => {
 
@@ -14,9 +15,11 @@ const Form = () => {
         <PrimeCard title="Form Penyewa Baru" >
             <form action="">
                 <div className="grid md:grid-cols-2 gap-4">
-                    <div className="">
-                        <PrimeFileUpload className="shadow-lg" emptyPlaceHolder="Seret dan tempel identitas dokumen pengenal, untuk mengapload." />
+                    <div className="flex flex-col gap-2 mb-2">
+                        <Label htmlFor="identification_document_filename" required={true}>Upload Identitas Dokumen</Label>
+                        <PrimeFileUpload id="identification_document_filename" name="identification_document_filename" className="shadow-lg" emptyPlaceHolder="Seret dan tempel identitas dokumen pengenal, untuk mengapload." />
                     </div>
+
                     <div className="grid-cols-2 grid gap-2">
                         <div>
                             <div className="flex flex-col gap-2 mb-2">
@@ -54,16 +57,49 @@ const Form = () => {
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div className="flex flex-col gap-2 mb-2">
+                        <Label htmlFor="original_address" required={true}>Alamat Asli</Label>
+                        <PrimeTextArea rows={1} name="original_address" id="original_address" />
+                        {/* <small className="p-error">casd</small>; */}
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
                         <div className="flex flex-col gap-2 mb-2">
-                            <Label htmlFor="original_address" required={true}>Alamat Asli</Label>
-                            <PrimeTextArea rows={1} name="original_address" id="original_address"/>
+                            <Label htmlFor="emergency_contact_name" required={true}>Keluarga Dekat</Label>
+                            <PrimeInputText id="emergency_contact_name" type="emergency_contact_name" name="emergency_contact_name" placeholder="Ibu John" />
                             {/* <small className="p-error">casd</small>; */}
                         </div>
-                        <div className="grid grid-cols-2">
-
+                        <div className="flex flex-col gap-2 mb-2">
+                            <Label htmlFor="emergency_contact_phone" required={true}>No. Keluarga Dekat</Label>
+                            <PrimeInputMask id="emergency_contact_phone" name="emergency_contact_phone" />
+                            {/* <small className="p-error">casd</small>; */}
                         </div>
                     </div>
+                    <div className="grid grid-cols-2 gap-2">
+                        <div className="flex flex-col gap-2 mb-2">
+                            <Label htmlFor="school">Nama Sekolah</Label>
+                            <PrimeInputText id="school" type="school" name="school" placeholder="Tadika Mesra" />
+                            {/* <small className="p-error">casd</small>; */}
+                        </div>
+                        <div className="flex flex-col gap-2 mb-2">
+                            <Label htmlFor="school_address">Alamat Sekolah</Label>
+                            <PrimeInputText id="school_address" type="school_address" name="school_address" placeholder="Jln. Semeru, No.25" />
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                        <div className="flex flex-col gap-2 mb-2">
+                            <Label htmlFor="workplace">Nama Perusahaan</Label>
+                            <PrimeInputText id="workplace" type="workplace" name="workplace" placeholder="PT. Example Sejahtera" />
+                            {/* <small className="p-error">casd</small>; */}
+                        </div>
+                        <div className="flex flex-col gap-2 mb-2">
+                            <Label htmlFor="workplace_address">Alamat Perusahaan</Label>
+                            <PrimeInputText id="workplace_address" type="workplace_address" name="workplace_address" placeholder="Jln. Semeru, No.25" />
+                        </div>
+                    </div>
+                </div>
+                <div className="flex gap-2 mt-5">
+                    <PrimeButton rounded={false} type="reset" severity="danger">Batal</PrimeButton>
+                    <PrimeButton rounded={false} >Simpan</PrimeButton>
                 </div>
             </form>
         </PrimeCard>

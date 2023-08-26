@@ -1,3 +1,4 @@
+'use client'
 import { Button, ButtonProps } from "primereact/button";
 
 interface PrimeButtonInterface extends ButtonProps{
@@ -5,5 +6,5 @@ interface PrimeButtonInterface extends ButtonProps{
 }
 
 export default function PrimeButton({children,...rest}:PrimeButtonInterface){
-    return <Button raised rounded outlined {...rest}>{children}</Button>
+    return <Button raised rounded outlined size="small" {...rest}>{children}</Button>
 }
