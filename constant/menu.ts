@@ -49,7 +49,7 @@ const RgPanelSidebarMenu: SidebarMenuItemInterface[] = [
             {
                 label: 'Daftar Penyewa',
                 icon: 'pi pi-fw pi-list',
-                url: "/rgpanel/tenant",
+                url: "/rgpanel/tenants",
                 items: []
             },
             {

@@ -1,5 +1,3 @@
-
-import PrimeSkeleton from "@/components/core/Skeleton/PrimeSkeleton"
 import MobileMenu from "./_components/MobileMenu"
 
 const Page = () => {

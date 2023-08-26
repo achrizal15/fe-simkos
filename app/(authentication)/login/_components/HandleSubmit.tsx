@@ -20,7 +20,6 @@ const FormLoginSubmit = ({ children }: { children: React.ReactNode }) => {
     }
     const { mutate, isLoading, error,isSuccess } = useMutation(submit,{
         onSuccess:(data)=>{
-            console.log(data)
            navigate.push('/rgpanel')
         }
     })
