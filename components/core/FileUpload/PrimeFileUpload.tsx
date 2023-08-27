@@ -5,9 +5,10 @@ interface FileInterface extends File {
     objectURL: string
 }
 interface FileUploadInterface extends FileUploadProps {
-    emptyPlaceHolder?: string
+    emptyPlaceHolder?: string,
+    fileUploadRef?: React.RefObject<FileUpload | null>;
 }
-const PrimeFileUpload = ({ emptyPlaceHolder, ...rest }: FileUploadInterface) => {
+const PrimeFileUpload: React.FC<FileUploadInterface> = ({ emptyPlaceHolder, fileUploadRef, ...rest }: FileUploadInterface) => {
     const chooseOptions = { icon: 'pi pi-fw pi-images', iconOnly: true, className: 'custom-choose-btn p-button-rounded p-button-outlined' };
     const cancelOptions = { icon: 'pi pi-fw pi-times', iconOnly: true, className: 'custom-cancel-btn p-button-danger p-button-rounded p-button-outlined' };
     const headerTemplate = (options: FileUploadHeaderTemplateOptions) => {
@@ -37,10 +38,11 @@ const PrimeFileUpload = ({ emptyPlaceHolder, ...rest }: FileUploadInterface) => 
             progressBarTemplate={<></>}
             contentStyle={{ padding: 0 }}
             itemTemplate={itemTemplate}
+            ref={fileUploadRef}
             emptyTemplate={
-            <p className="p-10 text-center">
-                {emptyPlaceHolder ? emptyPlaceHolder : "Drag and drop files to here to upload."}
-            </p>}
+                <p className="p-10 text-center">
+                    {emptyPlaceHolder ? emptyPlaceHolder : "Drag and drop files to here to upload."}
+                </p>}
             {...rest}
         />
     )

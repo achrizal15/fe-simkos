@@ -10,6 +10,7 @@ import Footer from '@/components/rgpanel/footer/footer';
 import { ALBERT_SANS } from 'constant/fonts';
 import Content from '@/components/rgpanel/content/Content';
 import AuthProvider from '@/components/AuthProvider/AuthProvider';
+import ReactQueryClientProvider from '@/components/ReactQueryProvider/ReactQueryClientProvide';
 
 moment.locale('id');
 export const metadata: Metadata = {
@@ -25,18 +26,20 @@ export default function RootLayout({
     return (
         <html lang='en'>
             <AuthProvider >
-            <PrimeProvider>
-                <body className={` ${ALBERT_SANS.className}`}>
-                    <Navbar />
-                    <Sidebar />
-                    <main className={`${styles.layout}`}>
-                        <Content>
-                            {children}
-                        </Content>
-                        <Footer />
-                    </main>
-                </body>
-            </PrimeProvider>
+                <PrimeProvider>
+                    <body className={` ${ALBERT_SANS.className}`}>
+                        <Navbar />
+                        <Sidebar />
+                        <main className={`${styles.layout}`}>
+                            <Content>
+                                <ReactQueryClientProvider>
+                                    {children}
+                                </ReactQueryClientProvider>
+                            </Content>
+                            <Footer />
+                        </main>
+                    </body>
+                </PrimeProvider>
             </AuthProvider>
         </html>
     );

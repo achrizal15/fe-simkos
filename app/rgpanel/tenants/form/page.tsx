@@ -1,4 +1,4 @@
-
+'use client'
 import PrimeCard from "@/components/core/Card/PrimeCard"
 import PrimeFileUpload from "@/components/core/FileUpload/PrimeFileUpload"
 import Label from "@/components/core/Input/Label"
@@ -8,101 +8,284 @@ import PrimeInputText from "@/components/core/Input/PrimeInputText"
 import IdentificationDocumentSelect from "./_components/IdentificationDocumentSelect"
 import PrimeTextArea from "@/components/core/Input/PrimeTextArea"
 import PrimeButton from "@/components/core/Button/PrimeButton"
-
+import { useForm, Controller } from "react-hook-form"
+import TypeTenantFormValues from "./_components/TypeTenantFormValue"
+import { useRef } from "react"
+import { FileUpload } from "primereact/fileupload"
+import { axiosAuthClient } from "@/utils/fetching/axios"
+import { useSession } from "next-auth/react"
+import { useMutation } from "react-query"
+import { Toast } from "primereact/toast"
+const submitTenant = async ({ session, data }) => {
+    const res = await (await axiosAuthClient(session.data.user)).post('/tenants', data, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        }
+    });
+    return res.data
+}
 const Form = () => {
-
+    const session = useSession();
+    const { control, handleSubmit, reset, formState: { errors } } = useForm<TypeTenantFormValues>()
+    const fileUploadRef = useRef<FileUpload>(null)
+    const toast=useRef<Toast>(null)
+    const { mutate, error } = useMutation(submitTenant, {
+        onSuccess: (data) => {
+            toast.current.show({ severity: 'success', life: 1500, summary: 'Create', detail:data.message  })
+            if (fileUploadRef.current) {
+                fileUploadRef.current.clear()
+            }
+            reset()
+        }
+    })
+    const submit = async (data: TypeTenantFormValues) => {
+        await mutate({ session, data })
+    }
     return (
-        <PrimeCard title="Form Penyewa Baru" >
-            <form action="">
-                <div className="grid md:grid-cols-2 gap-4">
-                    <div className="flex flex-col gap-2 mb-2">
-                        <Label htmlFor="identification_document_filename" required={true}>Upload Identitas Dokumen</Label>
-                        <PrimeFileUpload id="identification_document_filename" name="identification_document_filename" className="shadow-lg" emptyPlaceHolder="Seret dan tempel identitas dokumen pengenal, untuk mengapload." />
-                    </div>
+        <>
+            <Toast ref={toast} position="bottom-right" />
+            <PrimeCard title="Form Penyewa Baru" >
+                <form onSubmit={handleSubmit(submit)}>
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-2 mb-2">
+                            <Label htmlFor="identification_document_filename" required={true}>Upload Identitas Dokumen</Label>
+                            <Controller
+                                control={control}
+                                name="identification_document_filename"
+                                defaultValue={null}
+                                rules={{
+                                    required: 'Tidak Boleh kosong',
+                                }}
+                                render={({ field: { onChange, onBlur, value, } }) => (
+                                    <PrimeFileUpload
+                                        fileUploadRef={fileUploadRef}
+                                        id="identification_document_filename"
+                                        onSelect={(e) => onChange(e.files[0])}
+                                        onClear={() => onChange('')}
+                                        name="identification_document_filename"
+                                        className="shadow-lg"
+                                        emptyPlaceHolder="Seret dan tempel identitas dokumen pengenal, untuk mengapload." />
+                                )}
+                            />
+                            {errors.identification_document_filename && <small className="p-error">{errors.identification_document_filename.message}</small>}
+                        </div>
 
-                    <div className="grid-cols-2 grid gap-2">
-                        <div>
-                            <div className="flex flex-col gap-2 mb-2">
-                                <Label htmlFor="name" required={true}>Nama</Label>
-                                <PrimeInputText id="name" name="name" placeholder="Jon" />
-                                {/* <small className="p-error">casd</small>; */}
-                            </div>
-                            <div className="flex flex-col gap-2 mb-2">
-                                <Label htmlFor="email" required={true}>Email</Label>
-                                <PrimeInputText id="email" type="email" name="email" placeholder="example@simkos.com" />
-                                {/* <small className="p-error">casd</small>; */}
-                            </div>
-                            <div className="flex flex-col gap-2 mb-2">
-                                <Label htmlFor="identification_document" required={true}>Jenis Dokumen</Label>
-                                <IdentificationDocumentSelect />
-                                {/* <small className="p-error">casd</small>; */}
-                            </div>
+                        <div className="grid-cols-2 grid gap-2">
+                            <div>
+                                <div className="flex flex-col gap-2 mb-2">
+                                    <Label htmlFor="name" required={true}>Nama</Label>
+                                    <Controller
+                                        control={control}
+                                        name="name"
+                                        defaultValue=""
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <PrimeInputText id="name" name="name" onChange={onChange} value={value} placeholder="Jon" onBlur={onBlur} />
+                                        )}
+                                        rules={{
+                                            required: 'Tidak Boleh kosong',
+                                            maxLength: 100
+                                        }}
+                                    />
+                                    {errors.name && <small className="p-error">{errors.name.message}</small>}
+                                </div>
+                                <div className="flex flex-col gap-2 mb-2">
+                                    <Label htmlFor="email" required={true}>Email</Label>
+                                    <Controller
+                                        control={control}
+                                        name="email"
+                                        defaultValue=""
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <PrimeInputText id="email" type="email" value={value} onChange={onChange} onBlur={onBlur} name="email" placeholder="example@simkos.com" />
+                                        )}
+                                        rules={{
+                                            required: 'Tidak Boleh kosong',
+                                            pattern: {
+                                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                                message: 'Alamat email tidak valid',
+                                            },
+                                        }}
+                                    />
+                                    {errors.email && <small className="p-error">{errors.email.message}</small>}
+                                </div>
+                                <div className="flex flex-col gap-2 mb-2">
+                                    <Label htmlFor="identification_document" required={true}>Jenis Dokumen</Label>
+                                    <Controller
+                                        control={control}
+                                        name="identification_document"
+                                        defaultValue=""
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <IdentificationDocumentSelect onChange={onChange} initialValue={value} />
+                                        )}
+                                        rules={{
+                                            required: 'Tidak Boleh kosong'
+                                        }}
+                                    />
+                                    {errors.identification_document && <small className="p-error">{errors.identification_document.message}</small>}
+                                </div>
 
+                            </div>
+                            <div>
+                                <div className="flex flex-col gap-2 mb-2">
+                                    <Label htmlFor="place_of_birth" required={true}>Tempat Lahir</Label>
+                                    <Controller
+                                        control={control}
+                                        name="place_of_birth"
+                                        defaultValue=""
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <PrimeInputText onChange={onChange} onBlur={onBlur} value={value} id="place_of_birth" name="place_of_birth" placeholder="Jakarta" />
+                                        )}
+                                        rules={{
+                                            required: 'Tidak Boleh kosong'
+                                        }}
+                                    />
+                                    {errors.place_of_birth && <small className="p-error">{errors.place_of_birth.message}</small>}
+                                </div>
+                                <div className="flex flex-col gap-2 mb-2">
+                                    <Label htmlFor="birthdate" required={true}>Tanggal Lahir</Label>
+                                    <Controller
+                                        control={control}
+                                        name="birthdate"
+                                        defaultValue=""
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <PrimeCalendar id="birthdate" name="birthdate" placeholder="20/12/2000" onChange={onChange} onBlur={onBlur} value={value} />
+                                        )}
+                                        rules={{
+                                            required: 'Tidak Boleh kosong',
+                                        }}
+                                    />
+                                    {errors.birthdate && <small className="p-error">{errors.birthdate.message}</small>}
+                                </div>
+                                <div className="flex flex-col gap-2 mb-2">
+                                    <Label htmlFor="phone" required={true}>No. Handphone</Label>
+                                    <Controller
+                                        control={control}
+                                        name="phone"
+                                        defaultValue=""
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <PrimeInputMask id="phone" name="phone" value={value} onChange={onChange} onBlur={onBlur} />
+                                        )}
+                                        rules={{
+                                            required: 'Tidak Boleh kosong',
+                                        }}
+                                    />
+                                    {errors.phone && <small className="p-error">{errors.phone.message}</small>}
+                                </div>
+                            </div>
                         </div>
-                        <div>
+                        <div className="flex flex-col gap-2 mb-2">
+                            <Label htmlFor="original_address" required={true}>Alamat Asli</Label>
+                            <Controller
+                                control={control}
+                                name="original_address"
+                                defaultValue=""
+                                render={({ field: { onChange, onBlur, value } }) => (
+                                    <PrimeTextArea rows={1} name="original_address" id="original_address" onChange={onChange} onBlur={onBlur} value={value} />
+                                )}
+                                rules={{
+                                    required: 'Tidak Boleh kosong',
+                                }}
+                            />
+                            {errors.original_address && <small className="p-error">{errors.original_address.message}</small>}
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
                             <div className="flex flex-col gap-2 mb-2">
-                                <Label htmlFor="place_of_birth" required={true}>Tempat Lahir</Label>
-                                <PrimeInputText id="place_of_birth" name="place_of_birth" placeholder="Jakarta" />
-                                {/* <small className="p-error">casd</small>; */}
+                                <Label htmlFor="emergency_contact_name" required={true}>Keluarga Dekat</Label>
+                                <Controller
+                                    control={control}
+                                    name="emergency_contact_name"
+                                    defaultValue=""
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <PrimeInputText id="emergency_contact_name" type="emergency_contact_name" name="emergency_contact_name" placeholder="Ibu John" onChange={onChange} onBlur={onBlur} value={value} />
+                                    )}
+                                    rules={{
+                                        required: 'Tidak Boleh kosong',
+                                    }}
+                                />
+                                {errors.emergency_contact_name && <small className="p-error">{errors.emergency_contact_name.message}</small>}
                             </div>
                             <div className="flex flex-col gap-2 mb-2">
-                                <Label htmlFor="birthdate" required={true}>Tanggal Lahir</Label>
-                                <PrimeCalendar id="birthdate" name="birthdate" placeholder="20/12/2000" />
-                                {/* <small className="p-error">casd</small>; */}
+                                <Label htmlFor="emergency_contact_phone" required={true}>No. Keluarga Dekat</Label>
+                                <Controller
+                                    control={control}
+                                    name="emergency_contact_phone"
+                                    defaultValue=""
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <PrimeInputMask id="emergency_contact_phone" name="emergency_contact_phone" onChange={onChange} onBlur={onBlur} value={value} />
+                                    )}
+                                    rules={{
+                                        required: 'Tidak Boleh kosong',
+                                    }}
+                                />
+                                {errors.emergency_contact_phone && <small className="p-error">{errors.emergency_contact_phone.message}</small>}
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                            <div className="flex flex-col gap-2 mb-2">
+                                <Label htmlFor="school">Nama Sekolah</Label>
+                                <Controller
+                                    control={control}
+                                    name="school"
+                                    defaultValue=""
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <PrimeInputText id="school" type="school" name="school" placeholder="Tadika Mesra" onChange={onChange} onBlur={onBlur} value={value} />
+                                    )}
+                                />
+
+                                {errors.school && <small className="p-error">{errors.school.message}</small>}
                             </div>
                             <div className="flex flex-col gap-2 mb-2">
-                                <Label htmlFor="phone" required={true}>No. Handphone</Label>
-                                <PrimeInputMask id="phone" name="phone" />
-                                {/* <small className="p-error">casd</small>; */}
+                                <Label htmlFor="school_address">Alamat Sekolah</Label>
+                                <Controller
+                                    control={control}
+                                    name="school_address"
+                                    defaultValue=""
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <PrimeInputText id="school_address" type="school_address" name="school_address" placeholder="Jln. Semeru, No.25" onChange={onChange} onBlur={onBlur} value={value} />
+                                    )}
+                                />
+                                {errors.school_address && <small className="p-error">{errors.school_address.message}</small>}
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                            <div className="flex flex-col gap-2 mb-2">
+                                <Label htmlFor="occupation">Pekerjaan</Label>
+                                <Controller
+                                    control={control}
+                                    name="occupation"
+                                    defaultValue=""
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <PrimeInputText id="occupation" type="occupation" name="occupation" placeholder="PT. Example Sejahtera" onChange={onChange} onBlur={onBlur} value={value} />
+                                    )}
+                                />
+                                {errors.occupation && <small className="p-error">{errors.occupation.message}</small>}
+                            </div>
+                            <div className="flex flex-col gap-2 mb-2">
+                                <Label htmlFor="workplace_address">Alamat Perusahaan</Label>
+                                <Controller
+                                    control={control}
+                                    name="workplace_address"
+                                    defaultValue=""
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <PrimeInputText id="workplace_address" type="workplace_address" name="workplace_address" placeholder="Jln. Semeru, No.25" onChange={onChange} onBlur={onBlur} value={value} />
+                                    )}
+                                />
+                                {errors.workplace_address && <small className="p-error">{errors.workplace_address.message}</small>}
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col gap-2 mb-2">
-                        <Label htmlFor="original_address" required={true}>Alamat Asli</Label>
-                        <PrimeTextArea rows={1} name="original_address" id="original_address" />
-                        {/* <small className="p-error">casd</small>; */}
+                    <div className="flex gap-2 mt-5">
+                        <PrimeButton rounded={false} onClick={() => {
+                            if (fileUploadRef.current) {
+                                fileUploadRef.current.clear()
+                            }
+                            reset()
+                        }} type="reset" severity="danger">Batal</PrimeButton>
+                        <PrimeButton rounded={false} >Simpan</PrimeButton>
                     </div>
-                    <div className="grid grid-cols-2 gap-2">
-                        <div className="flex flex-col gap-2 mb-2">
-                            <Label htmlFor="emergency_contact_name" required={true}>Keluarga Dekat</Label>
-                            <PrimeInputText id="emergency_contact_name" type="emergency_contact_name" name="emergency_contact_name" placeholder="Ibu John" />
-                            {/* <small className="p-error">casd</small>; */}
-                        </div>
-                        <div className="flex flex-col gap-2 mb-2">
-                            <Label htmlFor="emergency_contact_phone" required={true}>No. Keluarga Dekat</Label>
-                            <PrimeInputMask id="emergency_contact_phone" name="emergency_contact_phone" />
-                            {/* <small className="p-error">casd</small>; */}
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                        <div className="flex flex-col gap-2 mb-2">
-                            <Label htmlFor="school">Nama Sekolah</Label>
-                            <PrimeInputText id="school" type="school" name="school" placeholder="Tadika Mesra" />
-                            {/* <small className="p-error">casd</small>; */}
-                        </div>
-                        <div className="flex flex-col gap-2 mb-2">
-                            <Label htmlFor="school_address">Alamat Sekolah</Label>
-                            <PrimeInputText id="school_address" type="school_address" name="school_address" placeholder="Jln. Semeru, No.25" />
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                        <div className="flex flex-col gap-2 mb-2">
-                            <Label htmlFor="workplace">Nama Perusahaan</Label>
-                            <PrimeInputText id="workplace" type="workplace" name="workplace" placeholder="PT. Example Sejahtera" />
-                            {/* <small className="p-error">casd</small>; */}
-                        </div>
-                        <div className="flex flex-col gap-2 mb-2">
-                            <Label htmlFor="workplace_address">Alamat Perusahaan</Label>
-                            <PrimeInputText id="workplace_address" type="workplace_address" name="workplace_address" placeholder="Jln. Semeru, No.25" />
-                        </div>
-                    </div>
-                </div>
-                <div className="flex gap-2 mt-5">
-                    <PrimeButton rounded={false} type="reset" severity="danger">Batal</PrimeButton>
-                    <PrimeButton rounded={false} >Simpan</PrimeButton>
-                </div>
-            </form>
-        </PrimeCard>
+                </form>
+            </PrimeCard>
+        </>
+
     )
 }
 export default Form

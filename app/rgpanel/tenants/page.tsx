@@ -4,7 +4,6 @@ import MetaInterface from '@/utils/Interfaces/paginator/MetaInterface';
 import { getServerSession } from 'next-auth';
 import UserJwtInterface from '@/utils/Interfaces/UserJwtInterface';
 import nextAuthOptions from '@/constant/nextAuthOption';
-import ReactQueryClientProvider from '@/components/ReactQueryProvider/ReactQueryClientProvide';
 
 const getTenantList = async () => {
     const { user }: { user: UserJwtInterface } = await getServerSession(nextAuthOptions)
@@ -27,9 +26,7 @@ const Page = async () => {
 
     return (
         <div>
-            <ReactQueryClientProvider>
-                <TableTenant initialData={initialData} />
-            </ReactQueryClientProvider>
+            <TableTenant initialData={initialData} />
         </div>
     )
 }
