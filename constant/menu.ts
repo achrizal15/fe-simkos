@@ -55,7 +55,7 @@ const RgPanelSidebarMenu: SidebarMenuItemInterface[] = [
             {
                 label: 'Tambah Penyewa Baru',
                 icon: 'pi pi-fw pi-user-plus',
-                url: "/rgpanel/tenants/form",
+                url: "/rgpanel/tenants/create",
                 items: []
             }
         ]

@@ -12,6 +12,7 @@ type TypeTenantFormValues = {
     school: string,
     school_address: string,
     occupation: string,
-    workplace_address: string
+    workplace_address: string,
+    workplace:string
 }
 export default TypeTenantFormValues

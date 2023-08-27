@@ -16,6 +16,10 @@ import { axiosAuthClient } from "@/utils/fetching/axios"
 import { useSession } from "next-auth/react"
 import { useMutation } from "react-query"
 import { Toast } from "primereact/toast"
+import { AxiosError } from "axios"
+import OccupationSelect from "./_components/OccupationSelect"
+import StudentField from "./_components/StudentField"
+import WorkspaceField from "./_components/WorkspaceField"
 const submitTenant = async ({ session, data }) => {
     const res = await (await axiosAuthClient(session.data.user)).post('/tenants', data, {
         headers: {
@@ -26,16 +30,19 @@ const submitTenant = async ({ session, data }) => {
 }
 const Form = () => {
     const session = useSession();
-    const { control, handleSubmit, reset, formState: { errors } } = useForm<TypeTenantFormValues>()
+    const { control, handleSubmit, reset, getValues, trigger, formState: { errors } } = useForm<TypeTenantFormValues>()
     const fileUploadRef = useRef<FileUpload>(null)
-    const toast=useRef<Toast>(null)
-    const { mutate, error } = useMutation(submitTenant, {
+    const toast = useRef<Toast>(null)
+    const { mutate, isLoading } = useMutation(submitTenant, {
         onSuccess: (data) => {
-            toast.current.show({ severity: 'success', life: 1500, summary: 'Create', detail:data.message  })
+            toast.current.show({ severity: 'success', life: 1500, summary: 'Create', detail: data.message })
             if (fileUploadRef.current) {
                 fileUploadRef.current.clear()
             }
             reset()
+        },
+        onError: (error: AxiosError) => {
+            toast.current.show({ severity: 'error', life: 1500, summary: 'Create', detail: error.message })
         }
     })
     const submit = async (data: TypeTenantFormValues) => {
@@ -219,68 +226,38 @@ const Form = () => {
                                 {errors.emergency_contact_phone && <small className="p-error">{errors.emergency_contact_phone.message}</small>}
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-2">
-                            <div className="flex flex-col gap-2 mb-2">
-                                <Label htmlFor="school">Nama Sekolah</Label>
-                                <Controller
-                                    control={control}
-                                    name="school"
-                                    defaultValue=""
-                                    render={({ field: { onChange, onBlur, value } }) => (
-                                        <PrimeInputText id="school" type="school" name="school" placeholder="Tadika Mesra" onChange={onChange} onBlur={onBlur} value={value} />
-                                    )}
-                                />
-
-                                {errors.school && <small className="p-error">{errors.school.message}</small>}
-                            </div>
-                            <div className="flex flex-col gap-2 mb-2">
-                                <Label htmlFor="school_address">Alamat Sekolah</Label>
-                                <Controller
-                                    control={control}
-                                    name="school_address"
-                                    defaultValue=""
-                                    render={({ field: { onChange, onBlur, value } }) => (
-                                        <PrimeInputText id="school_address" type="school_address" name="school_address" placeholder="Jln. Semeru, No.25" onChange={onChange} onBlur={onBlur} value={value} />
-                                    )}
-                                />
-                                {errors.school_address && <small className="p-error">{errors.school_address.message}</small>}
-                            </div>
+                        <div className="flex flex-col gap-2 mb-2">
+                            <Label htmlFor="occupation">Pekerjaan</Label>
+                            <Controller
+                                control={control}
+                                name="occupation"
+                                defaultValue=""
+                                render={({ field: { onChange, onBlur, value } }) => (
+                                    <OccupationSelect onChange={(value) => {
+                                        onChange(value)
+                                        trigger('occupation')
+                                    }} onBlur={onBlur} initialValue={value} />
+                                )}
+                                rules={{
+                                    required: "Tidak boleh kosong"
+                                }}
+                            />
+                            {errors.occupation && <small className="p-error">{errors.occupation.message}</small>}
                         </div>
-                        <div className="grid grid-cols-2 gap-2">
-                            <div className="flex flex-col gap-2 mb-2">
-                                <Label htmlFor="occupation">Pekerjaan</Label>
-                                <Controller
-                                    control={control}
-                                    name="occupation"
-                                    defaultValue=""
-                                    render={({ field: { onChange, onBlur, value } }) => (
-                                        <PrimeInputText id="occupation" type="occupation" name="occupation" placeholder="PT. Example Sejahtera" onChange={onChange} onBlur={onBlur} value={value} />
-                                    )}
-                                />
-                                {errors.occupation && <small className="p-error">{errors.occupation.message}</small>}
-                            </div>
-                            <div className="flex flex-col gap-2 mb-2">
-                                <Label htmlFor="workplace_address">Alamat Perusahaan</Label>
-                                <Controller
-                                    control={control}
-                                    name="workplace_address"
-                                    defaultValue=""
-                                    render={({ field: { onChange, onBlur, value } }) => (
-                                        <PrimeInputText id="workplace_address" type="workplace_address" name="workplace_address" placeholder="Jln. Semeru, No.25" onChange={onChange} onBlur={onBlur} value={value} />
-                                    )}
-                                />
-                                {errors.workplace_address && <small className="p-error">{errors.workplace_address.message}</small>}
-                            </div>
-                        </div>
+                        {getValues('occupation') == "Pelajar/Mahasiswa"
+                            ? <StudentField errors={errors} control={control} />
+                            : <WorkspaceField errors={errors} control={control} />
+                        }
                     </div>
                     <div className="flex gap-2 mt-5">
+
                         <PrimeButton rounded={false} onClick={() => {
                             if (fileUploadRef.current) {
                                 fileUploadRef.current.clear()
                             }
                             reset()
                         }} type="reset" severity="danger">Batal</PrimeButton>
-                        <PrimeButton rounded={false} >Simpan</PrimeButton>
+                        <PrimeButton rounded={false} loading={isLoading} >Simpan</PrimeButton>
                     </div>
                 </form>
             </PrimeCard>
