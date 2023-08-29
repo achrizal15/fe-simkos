@@ -31,7 +31,7 @@ const submitTenant = async ({ session, data, id }) => {
     return res.data
 }
 
-const getTenant = async (session:any,url: string) => {
+const getTenant = async (session: any, url: string) => {
     const res = await (await axiosAuthClient(session.data.user)).get(url)
     if (res.status != 200) {
         throw new Error(res.statusText)
@@ -42,19 +42,18 @@ const getTenant = async (session:any,url: string) => {
 
 const Page = ({ params }) => {
     const session = useSession();
-    const { data: tenant ,isLoading:tenantLoading} = useQuery(`tenants/${params.id}`, () => getTenant(session,`tenants/${params.id}`))
+    const { data: tenant, isLoading: tenantLoading } = useQuery(`tenants/${params.id}`, () => getTenant(session, `tenants/${params.id}`))
     const fileUploadRef = useRef<FileUpload>(null)
     const toast = useRef<Toast>(null)
     const queryClient = useQueryClient()
-    const { control, handleSubmit, reset, getValues, setValue, trigger, formState: { errors } } = useForm<TypeTenantFormValues>()
-
+    const { control, handleSubmit,  getValues, setValue, trigger, formState: { errors, isSubmitting } } = useForm<TypeTenantFormValues>()
     const { mutate, isLoading } = useMutation(submitTenant, {
         onSuccess: (data) => {
             toast.current.show({ severity: 'success', life: 1500, summary: 'Update', detail: data.message })
             if (fileUploadRef.current) {
                 fileUploadRef.current.clear()
             }
-            queryClient.setQueryData(`tenants/${params.id}`,data.data)
+            queryClient.setQueryData(`tenants/${params.id}`, data.data)
         },
         onError: (error: AxiosError) => {
             const data: any = error.response.data
@@ -62,10 +61,10 @@ const Page = ({ params }) => {
         }
     })
 
-    const submit = async (data: TypeTenantFormValues) => {
-        await mutate({ session, data, id: tenant.id })
+    const submit = async (data: TypeTenantFormValues) => {        
+        await mutate({ session, data:{ ...data, birthdate: moment(data.birthdate, 'DD/MM/YYYY').format('YYYY-MM-DD') }, id: tenant.id })
     }
-    if(tenantLoading)return "Waiting default data..."
+    if (tenantLoading) return "Waiting default data..."
     return (
         <PrimeCard title="Form Edit Penyewa" >
             <Toast ref={toast} />
@@ -175,7 +174,10 @@ const Page = ({ params }) => {
                                     name="birthdate"
                                     defaultValue={tenant.birthdate}
                                     render={({ field: { onChange, onBlur, value } }) => (
-                                        <PrimeCalendar id="birthdate" name="birthdate" placeholder="20/12/2000" onChange={onChange} onBlur={onBlur} value={moment(value, 'DD/MM/YYYY').toDate()} dateFormat="dd/mm/yy" />
+                                        <PrimeCalendar id="birthdate" name="birthdate" placeholder="20/12/2000" onChange={(event) => {
+                                            console.log(event)
+                                            onChange(event)
+                                        }} onBlur={onBlur} value={moment(value, 'DD/MM/YYYY').toDate()} dateFormat="dd/mm/yy" />
                                     )}
                                     rules={{
                                         required: 'Tidak Boleh kosong',
@@ -273,7 +275,7 @@ const Page = ({ params }) => {
                 </div>
                 <div className="flex gap-2 mt-5">
                     <Link href={'/rgpanel/tenants'}>
-                        <PrimeButton rounded={false} type="reset" severity="danger">Batal</PrimeButton>
+                        <PrimeButton rounded={false} type="reset" severity="danger">Kembali</PrimeButton>
                     </Link>
                     <PrimeButton rounded={false} loading={isLoading} >Simpan</PrimeButton>
                 </div>

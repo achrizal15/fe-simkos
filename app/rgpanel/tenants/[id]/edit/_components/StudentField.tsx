@@ -17,7 +17,7 @@ const StudentField = ({ control, errors, defaultValue }: {
                 <Controller
                     control={control}
                     name="school"
-                    defaultValue={defaultValue.school}
+                    defaultValue={defaultValue.school?defaultValue.school:''}
                     render={({ field: { onChange, onBlur, value } }) => (
                         <PrimeInputText id="school" type="school" name="school" placeholder="Tadika Mesra" onChange={onChange} onBlur={onBlur} value={value} />
                     )}
@@ -30,7 +30,7 @@ const StudentField = ({ control, errors, defaultValue }: {
                 <Controller
                     control={control}
                     name="school_address"
-                    defaultValue={defaultValue.school_address}
+                    defaultValue={defaultValue.school_address?defaultValue.school_address:''}
                     render={({ field: { onChange, onBlur, value } }) => (
                         <PrimeInputText id="school_address" type="school_address" name="school_address" placeholder="Jln. Semeru, No.25" onChange={onChange} onBlur={onBlur} value={value} />
                     )}

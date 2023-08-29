@@ -9,7 +9,9 @@ import Link from "next/link"
 const ActionHandle = ({item, toast, queryKey}:{item:TenantInterface,toast:any,queryKey:QueryStringKeyInterface}) => {
     return (
         <div className="gap-2 flex justify-center items-center">
+              <Link href={`/rgpanel/tenants/${item.id}/show`}>
             <PrimeButton tooltip="Show" tooltipOptions={{ showDelay: 500, position: 'bottom' }} severity="info" icon="pi pi-eye"></PrimeButton>
+            </Link>
            <Link href={`/rgpanel/tenants/${item.id}/edit`}>
            <PrimeButton tooltip="Edit" tooltipOptions={{ showDelay: 500, position: 'bottom' }} severity="warning" icon="pi pi-pencil"></PrimeButton>
            </Link>
