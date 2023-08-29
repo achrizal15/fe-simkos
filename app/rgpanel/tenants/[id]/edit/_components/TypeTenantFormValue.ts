@@ -1,7 +1,8 @@
 type TypeTenantFormValues = {
     name: string,
-    identification_document_filename: object | File
-    identification_document: string
+    identification_document_filename: object | File |string,
+    identification_document_filename_default?:string,
+    identification_document: string,
     email: string,
     place_of_birth: string,
     birthdate: string,

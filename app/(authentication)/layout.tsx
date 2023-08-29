@@ -22,9 +22,9 @@ export default function RootLayout({
 }) {
     return (
         <html lang='en'>
-            <ReactQueryClientProvider>
-                <PrimeProvider>
-                    <body className={`${ALBERT_SANS.className} ${layout.layout}`}>
+            <PrimeProvider>
+                <body className={`${ALBERT_SANS.className} ${layout.layout}`}>
+                    <ReactQueryClientProvider>
                         <main className='grid md:grid-cols-2 bg-white overflow-hidden rounded-lg shadow-lg h-[90vh] mt-5'>
                             <div className='relative md:h-full w-full '>
                                 <Image src={authImage} fill alt='aut-image' style={{ objectFit: "cover" }} priority sizes='(min-width: 768px) 100vw' />
@@ -35,9 +35,9 @@ export default function RootLayout({
                             {children}
                         </main>
                         <Footer />
-                    </body>
-                </PrimeProvider>
-            </ReactQueryClientProvider>
+                    </ReactQueryClientProvider>
+                </body>
+            </PrimeProvider>
         </html>
     );
 }

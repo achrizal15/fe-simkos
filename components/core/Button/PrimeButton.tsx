@@ -6,5 +6,12 @@ interface PrimeButtonInterface extends ButtonProps{
 }
 
 export default function PrimeButton({children,...rest}:PrimeButtonInterface){
-    return <Button raised rounded outlined size="small" {...rest}>{children}</Button>
+    return <Button raised rounded outlined size="small" pt={
+        {
+            icon:{
+                className:'text-xs',
+                style:{fontSize:'10px'}
+            }
+        }
+    } {...rest}>{children}</Button>
 }

@@ -9,5 +9,6 @@ module.exports = {
     },
     images: {
         formats: ['image/webp', 'image/avif'],
+        domains: ['127.0.0.1','localhost'],
     },
 };

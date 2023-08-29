@@ -20,6 +20,7 @@ import { AxiosError } from "axios"
 import OccupationSelect from "./_components/OccupationSelect"
 import StudentField from "./_components/StudentField"
 import WorkspaceField from "./_components/WorkspaceField"
+import Link from "next/link"
 const submitTenant = async ({ session, data }) => {
     const res = await (await axiosAuthClient(session.data.user)).post('/tenants', data, {
         headers: {
@@ -250,13 +251,9 @@ const Form = () => {
                         }
                     </div>
                     <div className="flex gap-2 mt-5">
-
-                        <PrimeButton rounded={false} onClick={() => {
-                            if (fileUploadRef.current) {
-                                fileUploadRef.current.clear()
-                            }
-                            reset()
-                        }} type="reset" severity="danger">Batal</PrimeButton>
+                    <Link href={'/rgpanel/tenants'}>
+                        <PrimeButton rounded={false} type="reset" severity="danger">Kembali</PrimeButton>
+                    </Link>
                         <PrimeButton rounded={false} loading={isLoading} >Simpan</PrimeButton>
                     </div>
                 </form>

@@ -2,7 +2,14 @@ import Label from "@/components/core/Input/Label"
 import PrimeInputText from "@/components/core/Input/PrimeInputText"
 import { Controller } from "react-hook-form"
 
-const WorkspaceField=({control,errors})=>{
+const WorkspaceField=({control,errors,defaultValue}:{
+    control: any,
+    errors: any,
+    defaultValue?: {
+        workplace: string,
+        workplace_address: string
+    }
+})=>{
     return (
         <div className="grid grid-cols-2 gap-2">
         <div className="flex flex-col gap-2 mb-2">
@@ -10,7 +17,7 @@ const WorkspaceField=({control,errors})=>{
             <Controller
                 control={control}
                 name="workplace"
-                defaultValue=""
+                defaultValue={defaultValue.workplace}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <PrimeInputText id="workplace" type="workplace" name="workplace" placeholder="PT. Example Sejahtera" onChange={onChange} onBlur={onBlur} value={value} />
                 )}
@@ -22,7 +29,7 @@ const WorkspaceField=({control,errors})=>{
             <Controller
                 control={control}
                 name="workplace_address"
-                defaultValue=""
+                defaultValue={defaultValue.workplace_address}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <PrimeInputText id="workplace_address" type="workplace_address" name="workplace_address" placeholder="Jln. Semeru, No.25" onChange={onChange} onBlur={onBlur} value={value} />
                 )}
