@@ -16,15 +16,17 @@ const getTenant = async (id: number) => {
 const Page = async ({ params }) => {
     const { data: tenant }: { data: TenantInterface } = await getTenant(params.id);
     return (
-        <PrimeCard title={<div className="flex justify-between items-center">
-        Informasi Penyewa
-        <div className="flex items-center gap-5">
-            <PrimeButton icon='pi pi-file-pdf' severity="danger" tooltip="Export pdf" tooltipOptions={{
-                position:'left'
-            }}/>
-        </div>
-        </div>} >
-            <div className="grid md:grid-cols-2 gap-5">
+        <PrimeCard title={
+            <div className="flex justify-between items-center">
+                Informasi Penyewa
+                <div className="flex items-center gap-5">
+                    <PrimeButton icon='pi pi-file-pdf' disabled severity="danger" tooltip="On going" tooltipOptions={{
+                        position: 'left'
+                    }} />
+                </div>
+            </div>
+        } >
+            <div className="grid md:grid-cols-2 gap-5 mb-5">
                 <div className="relative overflow-hidden">
                     <Image src={tenant.identification_document_filename}
                         width={0}
