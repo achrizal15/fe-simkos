@@ -3,6 +3,7 @@ import PrimeCard from "@/components/core/Card/PrimeCard";
 import TenantInterface from "@/utils/Interfaces/TenantItemInterface";
 import { API_URL, fetchHeader } from "@/utils/fetching/fetch"
 import Image from "next/image";
+import Link from "next/link";
 
 const getTenant = async (id: number) => {
     const { headers } = await fetchHeader();
@@ -111,6 +112,9 @@ const Page = async ({ params }) => {
                         )
                 }
             </div>
+            <Link href={'/rgpanel/tenants'}>
+                <PrimeButton severity="danger">Kembali</PrimeButton>
+            </Link>
         </PrimeCard>
     )
 }
