@@ -61,8 +61,9 @@ const Page = async ({ params }) => {
                     <div className="break-words">
                         <span className="font-semibold ">No. Handphone :</span>
                         <p>
+                            {tenant.phone}
                             <a target="_blank" href={`https://wa.me/${tenant.phone}`}>
-                                {tenant.phone}
+                                <i className="pi pi-whatsapp ml-2 text-green-500"></i>
                             </a>
                         </p>
                     </div>
@@ -78,7 +79,11 @@ const Page = async ({ params }) => {
                     </div>
                     <div className="break-words">
                         <span className="font-semibold ">No. Keluarga Dekat :</span>
-                        <p>{tenant.emergency_contact_phone}</p>
+                        <p>{tenant.emergency_contact_phone}
+                            <a target="_blank" href={`https://wa.me/${tenant.emergency_contact_phone}`}>
+                                <i className="pi pi-whatsapp ml-2 text-green-500"></i>
+                            </a>
+                        </p>
                     </div>
                 </div>
                 <div className="break-words">
