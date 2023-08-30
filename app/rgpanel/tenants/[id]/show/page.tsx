@@ -113,7 +113,7 @@ const Page = async ({ params }) => {
                 }
             </div>
             <Link href={'/rgpanel/tenants'}>
-                <PrimeButton severity="danger">Kembali</PrimeButton>
+                <PrimeButton rounded={false} severity="danger">Kembali</PrimeButton>
             </Link>
         </PrimeCard>
     )
