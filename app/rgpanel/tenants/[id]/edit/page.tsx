@@ -69,7 +69,7 @@ const Page = ({ params }) => {
         <PrimeCard title="Form Edit Penyewa" >
             <Toast ref={toast} />
             <form onSubmit={handleSubmit(submit)}>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid lg:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-2 mb-2">
                         <Label htmlFor="identification_document_filename" required={true}>Upload Identitas Dokumen</Label>
                         <Controller
