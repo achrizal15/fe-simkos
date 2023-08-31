@@ -39,6 +39,7 @@ const TableTenant = ({ initialData }: { initialData: { data: TenantInterface[], 
         search:''
     })
     const { data, isFetching } = useQuery(`tenants?${objectToQueryString(queryKey)}`, () => getTenantList(initialData.token, `tenants?${objectToQueryString(queryKey)}`), {
+        refetchOnMount: false,
         initialData: initialData,
     })
     const { data: tenants, meta }: { data: TenantInterface[], meta: MetaInterface } = data

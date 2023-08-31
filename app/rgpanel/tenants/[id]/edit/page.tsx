@@ -4,7 +4,6 @@ import { Toast } from "primereact/toast"
 import PrimeFileUpload from "@/components/core/FileUpload/PrimeFileUpload"
 import Label from "@/components/core/Input/Label"
 import PrimeCalendar from "@/components/core/Input/PrimeCalendar"
-import PrimeInputMask from "@/components/core/Input/PrimeInputMask"
 import PrimeInputText from "@/components/core/Input/PrimeInputText"
 import PrimeTextArea from "@/components/core/Input/PrimeTextArea"
 import PrimeButton from "@/components/core/Button/PrimeButton"
@@ -199,7 +198,7 @@ const Page = ({ params }) => {
                                     name="phone"
                                     defaultValue={tenant.phone}
                                     render={({ field: { onChange, onBlur, value } }) => (
-                                        <PrimeInputMask id="phone" name="phone" value={value} onChange={onChange} onBlur={onBlur} />
+                                        <PrimeInputText keyfilter='int' placeholder="62234104446" id="phone" name="phone" value={value} onChange={onChange} onBlur={onBlur} />
                                     )}
                                     rules={{
                                         required: 'Tidak Boleh kosong',
@@ -247,7 +246,7 @@ const Page = ({ params }) => {
                                 name="emergency_contact_phone"
                                 defaultValue={tenant.emergency_contact_phone}
                                 render={({ field: { onChange, onBlur, value } }) => (
-                                    <PrimeInputMask id="emergency_contact_phone" name="emergency_contact_phone" onChange={onChange} onBlur={onBlur} value={value} />
+                                    <PrimeInputText keyfilter='int' placeholder="62234104446" id="emergency_contact_phone" name="emergency_contact_phone" onChange={onChange} onBlur={onBlur} value={value} />
                                 )}
                                 rules={{
                                     required: 'Tidak Boleh kosong'

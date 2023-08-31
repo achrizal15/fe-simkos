@@ -3,7 +3,6 @@ import PrimeCard from "@/components/core/Card/PrimeCard"
 import PrimeFileUpload from "@/components/core/FileUpload/PrimeFileUpload"
 import Label from "@/components/core/Input/Label"
 import PrimeCalendar from "@/components/core/Input/PrimeCalendar"
-import PrimeInputMask from "@/components/core/Input/PrimeInputMask"
 import PrimeInputText from "@/components/core/Input/PrimeInputText"
 import IdentificationDocumentSelect from "./_components/IdentificationDocumentSelect"
 import PrimeTextArea from "@/components/core/Input/PrimeTextArea"
@@ -170,7 +169,7 @@ const Form = () => {
                                         name="phone"
                                         defaultValue=""
                                         render={({ field: { onChange, onBlur, value } }) => (
-                                            <PrimeInputMask id="phone" name="phone" value={value} onChange={onChange} onBlur={onBlur} />
+                                            <PrimeInputText keyfilter='int' placeholder="62234104446" id="phone" name="phone" value={value} onChange={onChange} onBlur={onBlur} />
                                         )}
                                         rules={{
                                             required: 'Tidak Boleh kosong',
@@ -218,7 +217,7 @@ const Form = () => {
                                     name="emergency_contact_phone"
                                     defaultValue=""
                                     render={({ field: { onChange, onBlur, value } }) => (
-                                        <PrimeInputMask id="emergency_contact_phone" name="emergency_contact_phone" onChange={onChange} onBlur={onBlur} value={value} />
+                                        <PrimeInputText keyfilter='int' placeholder="62234104446" id="emergency_contact_phone" name="emergency_contact_phone" onChange={onChange} onBlur={onBlur} value={value} />
                                     )}
                                     rules={{
                                         required: 'Tidak Boleh kosong',
