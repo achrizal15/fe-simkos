@@ -244,8 +244,7 @@ const Page = ({ params }) => {
                                     <PrimeInputMask id="emergency_contact_phone" name="emergency_contact_phone" onChange={onChange} onBlur={onBlur} value={value} />
                                 )}
                                 rules={{
-                                    required: 'Tidak Boleh kosong',
-                                    minLength: 20
+                                    required: 'Tidak Boleh kosong'
                                 }}
                             />
                             {errors.emergency_contact_phone && <small className="p-error">{errors.emergency_contact_phone.message}</small>}
