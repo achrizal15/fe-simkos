@@ -21,6 +21,8 @@ import IdentificationDocumentSelect from "./_components/IdentificationDocumentSe
 import OccupationSelect from "./_components/OccupationSelect"
 import StudentField from "./_components/StudentField"
 import WorkspaceField from "./_components/WorkspaceField"
+import TenantInterface from "@/utils/Interfaces/TenantItemInterface"
+import objectToQueryString from "@/constant/objectToQueryString"
 const submitTenant = async ({ session, data, id }) => {
     const res = await ((await axiosAuthClient(session.data.user))).post(`/tenants/${id}`, data, {
         headers: {
@@ -39,7 +41,7 @@ const getTenant = async (session: any, url: string) => {
     return res.data?.data
 }
 
-const Page = ({ params }) => {
+const Page = ({ params, searchParams }) => {
     const session = useSession({
         required: true,
     });
@@ -47,24 +49,42 @@ const Page = ({ params }) => {
     const fileUploadRef = useRef<FileUpload>(null)
     const toast = useRef<Toast>(null)
     const queryClient = useQueryClient()
-    const { data: tenant, isLoading: tenantLoading } = useQuery(`tenants/${params.id}`, () => getTenant(session, `tenants/${params.id}`), {
+    const { data: tenant, isLoading: tenantLoading } = useQuery({
+        queryKey: ['tenants', params.id],
+        queryFn: () => getTenant(session, `tenants/${params.id}`),
         enabled: session.status != "loading"
     })
     const { control, handleSubmit, getValues, setValue, trigger, formState: { errors } } = useForm<TypeTenantFormValues>()
     const { mutate, isLoading } = useMutation(submitTenant, {
-        onSuccess: (data) => {
-            toast.current.show({ severity: 'success', life: 1500, summary: 'Update', detail: data.message })
+        onSuccess: (res) => {
+            toast.current.show({ severity: 'success', life: 1500, summary: 'Update', detail: res.message })
             if (fileUploadRef.current) {
                 fileUploadRef.current.clear()
             }
-            queryClient.setQueryData(`tenants/${params.id}`, data.data)
+            queryClient.setQueryData(['tenants', params.id], res.data)
+            const queryCache = queryClient.setQueriesData(['tenants',objectToQueryString({
+                page:searchParams.page,
+                withTrash:false,
+                search:''
+            })],
+            (oldData:any) => (
+                {
+                    ...oldData,
+                    data: oldData.data.map((tenant: TenantInterface) => {
+                        if (tenant.id == params.id) {
+                            tenant = res.data
+                        }
+                        return tenant
+                    }),
+                }
+            ))
+            console.log(queryCache)
         },
         onError: (error: AxiosError) => {
             const data: any = error.response.data
             toast.current.show({ severity: 'error', life: 1500, summary: 'Update', detail: data.message })
         }
     })
-
     const submit = async (data: TypeTenantFormValues) => {
         await mutate({ session, data: { ...data, birthdate: moment(data.birthdate, 'DD/MM/YYYY').format('YYYY-MM-DD') }, id: tenant.id })
     }
@@ -273,9 +293,12 @@ const Page = ({ params }) => {
                         />
                         {errors.occupation && <small className="p-error">{errors.occupation.message}</small>}
                     </div>
-                    {getValues('occupation') == "Pelajar/Mahasiswa"
+                    {getValues('occupation') == null && tenant.occupation == "Pelajar/Mahasiswa"
                         ? <StudentField defaultValue={{ school_address: tenant.school_address, school: tenant.school }} errors={errors} control={control} />
-                        : <WorkspaceField defaultValue={{ workplace_address: tenant.workplace_address, workplace: tenant.workplace }} errors={errors} control={control} />
+                        : (getValues('occupation') == "Pelajar/Mahasiswa"
+                            ? <StudentField defaultValue={{ school_address: tenant.school_address, school: tenant.school }} errors={errors} control={control} />
+                            : <WorkspaceField defaultValue={{ workplace_address: tenant.workplace_address, workplace: tenant.workplace }} errors={errors} control={control} />
+                        )
                     }
                 </div>
                 <div className="flex gap-2 mt-5">

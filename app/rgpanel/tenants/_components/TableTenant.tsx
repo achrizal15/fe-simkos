@@ -17,7 +17,7 @@ import objectToQueryString from "@/constant/objectToQueryString"
 import ActionHandle from "./ActionHandle"
 import Exports from "@/components/rgpanel/Datatable/Exports"
 
-const getTenantList = async (token:string, url: string) => {
+const getTenantList = async (token: string, url: string) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}`, {
         headers: {
             'Content-type': 'application/json',
@@ -31,14 +31,16 @@ const getTenantList = async (token:string, url: string) => {
     return await res.json()
 }
 const column: ColumnMetaInterface[] = TenantColumn
-const TableTenant = ({ initialData }: { initialData: { data: TenantInterface[], meta?: MetaInterface,token:string } }) => {
+const TableTenant = ({ initialData }: { initialData: { data: TenantInterface[], meta?: MetaInterface, token: string } }) => {
     const toast = useRef<Toast>(null);
     const [queryKey, setQueryKey] = useState<QueryStringKeyInterface>({
         page: initialData.meta.current_page,
         withTrash: false,
-        search:''
+        search: ''
     })
-    const { data, isFetching } = useQuery(`tenants?${objectToQueryString(queryKey)}`, () => getTenantList(initialData.token, `tenants?${objectToQueryString(queryKey)}`), {
+    const { data, isFetching } = useQuery({
+        queryFn: () => getTenantList(initialData.token, `tenants?${objectToQueryString(queryKey)}`),
+        queryKey: [`tenants`,objectToQueryString(queryKey)],
         refetchOnMount: false,
         initialData: initialData,
     })
@@ -47,7 +49,7 @@ const TableTenant = ({ initialData }: { initialData: { data: TenantInterface[], 
     return (
         <>
             <Toast ref={toast} position="bottom-right" />
-            <ConfirmDialog />   
+            <ConfirmDialog />
             <Table value={tenants}
                 resizableColumns
                 scrollable
@@ -59,7 +61,9 @@ const TableTenant = ({ initialData }: { initialData: { data: TenantInterface[], 
                     <div className="flex justify-between items-center flex-wrap gap-2">
                         <Search placeholder="Cari nama, no.hp, email" debounce={(value) => setQueryKey({ ...queryKey, page: initialData.meta.current_page, search: value })} />
                         <div className="flex justify-between w-full md:w-auto md:justify-start flex-wrap items-center gap-2">
-                            <WithTrash onChange={(value) => setQueryKey({ ...queryKey, withTrash: value })} />
+                            <WithTrash onChange={(value) => {
+                                setQueryKey({ ...queryKey, withTrash: value }) 
+                                }} />
                             <Exports />
                         </div>
                     </div>
@@ -67,7 +71,7 @@ const TableTenant = ({ initialData }: { initialData: { data: TenantInterface[], 
             >
                 <Td header="Aksi" frozen body={(item) => <ActionHandle item={item} queryKey={queryKey} toast={toast} />}></Td>
                 {column.map((item, key) => (
-                    <Td field={item.field} header={item.header} key={key}/>
+                    <Td field={item.field} sortable header={item.header} key={key} />
                 ))}
 
             </Table>
