@@ -46,7 +46,7 @@ const Page = ({ params }) => {
     const fileUploadRef = useRef<FileUpload>(null)
     const toast = useRef<Toast>(null)
     const queryClient = useQueryClient()
-    const { control, handleSubmit,  getValues, setValue, trigger, formState: { errors, isSubmitting } } = useForm<TypeTenantFormValues>()
+    const { control, handleSubmit,  getValues, setValue, trigger, formState: { errors } } = useForm<TypeTenantFormValues>()
     const { mutate, isLoading } = useMutation(submitTenant, {
         onSuccess: (data) => {
             toast.current.show({ severity: 'success', life: 1500, summary: 'Update', detail: data.message })
@@ -64,6 +64,7 @@ const Page = ({ params }) => {
     const submit = async (data: TypeTenantFormValues) => {        
         await mutate({ session, data:{ ...data, birthdate: moment(data.birthdate, 'DD/MM/YYYY').format('YYYY-MM-DD') }, id: tenant.id })
     }
+    console.log(errors)
     if (tenantLoading) return "Waiting default data..."
     return (
         <PrimeCard title="Form Edit Penyewa" >
