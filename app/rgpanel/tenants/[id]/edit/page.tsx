@@ -78,7 +78,6 @@ const Page = ({ params, searchParams }) => {
                     }),
                 }
             ))
-            console.log(queryCache)
         },
         onError: (error: AxiosError) => {
             const data: any = error.response.data
