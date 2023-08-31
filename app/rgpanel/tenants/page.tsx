@@ -13,16 +13,15 @@ const getTenantList = async () => {
             Accept: 'application/json',
             Authorization: `Bearer ${user.token}`
         },
-        cache: 'no-store'
     })
     if (res.status != 200) {
         throw new Error(res.statusText)
     }
-    return await res.json()
+    return { token:user.token, ...await res.json() }
 }
 
 const Page = async () => {
-    const initialData: { data: TenantInterface[], meta: MetaInterface } = await getTenantList()
+    const initialData: { data: TenantInterface[], meta: MetaInterface,token:string } = await getTenantList()
 
     return (
         <div>

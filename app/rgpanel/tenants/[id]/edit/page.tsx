@@ -41,12 +41,17 @@ const getTenant = async (session: any, url: string) => {
 }
 
 const Page = ({ params }) => {
-    const session = useSession();
-    const { data: tenant, isLoading: tenantLoading } = useQuery(`tenants/${params.id}`, () => getTenant(session, `tenants/${params.id}`))
+    const session = useSession({
+        required: true,
+    });
+
     const fileUploadRef = useRef<FileUpload>(null)
     const toast = useRef<Toast>(null)
     const queryClient = useQueryClient()
-    const { control, handleSubmit,  getValues, setValue, trigger, formState: { errors } } = useForm<TypeTenantFormValues>()
+    const { data: tenant, isLoading: tenantLoading } = useQuery(`tenants/${params.id}`, () => getTenant(session, `tenants/${params.id}`), {
+        enabled: session.status != "loading"
+    })
+    const { control, handleSubmit, getValues, setValue, trigger, formState: { errors } } = useForm<TypeTenantFormValues>()
     const { mutate, isLoading } = useMutation(submitTenant, {
         onSuccess: (data) => {
             toast.current.show({ severity: 'success', life: 1500, summary: 'Update', detail: data.message })
@@ -61,14 +66,15 @@ const Page = ({ params }) => {
         }
     })
 
-    const submit = async (data: TypeTenantFormValues) => {        
-        await mutate({ session, data:{ ...data, birthdate: moment(data.birthdate, 'DD/MM/YYYY').format('YYYY-MM-DD') }, id: tenant.id })
+    const submit = async (data: TypeTenantFormValues) => {
+        await mutate({ session, data: { ...data, birthdate: moment(data.birthdate, 'DD/MM/YYYY').format('YYYY-MM-DD') }, id: tenant.id })
     }
-    console.log(errors)
-    if (tenantLoading) return "Waiting default data..."
+
+    if (tenantLoading || !tenant) return "Waiting default data..."
     return (
         <PrimeCard title="Form Edit Penyewa" >
             <Toast ref={toast} />
+
             <form onSubmit={handleSubmit(submit)}>
                 <div className="grid lg:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-2 mb-2">
@@ -280,6 +286,7 @@ const Page = ({ params }) => {
                     <PrimeButton rounded={false} loading={isLoading} >Simpan</PrimeButton>
                 </div>
             </form>
+
         </PrimeCard>
     )
 }

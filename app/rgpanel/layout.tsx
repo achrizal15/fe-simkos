@@ -25,7 +25,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang='en'>
-            <AuthProvider >
+            <AuthProvider refetchOnWindowFocus={false}>
                 <PrimeProvider>
                     <body className={` ${ALBERT_SANS.className}`}>
                         <Navbar />

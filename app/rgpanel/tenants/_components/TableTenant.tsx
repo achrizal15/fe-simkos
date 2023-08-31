@@ -1,5 +1,4 @@
 'use client'
-import PrimeButton from "@/components/core/Button/PrimeButton"
 import { Table, Td } from "@/components/rgpanel/Datatable/Tables"
 import ColumnMetaInterface from "@/utils/Interfaces/ColumnMetaInterface"
 import TenantInterface from "@/utils/Interfaces/TenantItemInterface"
@@ -8,8 +7,6 @@ import React, { useRef, useState } from 'react';
 import { Paginator } from "primereact/paginator"
 import { ConfirmDialog } from "primereact/confirmdialog"
 import { Toast } from "primereact/toast"
-import UserJwtInterface from "@/utils/Interfaces/UserJwtInterface"
-import { useSession } from "next-auth/react"
 import TenantColumn from "./TenantColumn"
 import { DataTableSortEvent } from "primereact/datatable"
 import Search from "@/components/rgpanel/Datatable/Search"
@@ -20,43 +17,36 @@ import objectToQueryString from "@/constant/objectToQueryString"
 import ActionHandle from "./ActionHandle"
 import Exports from "@/components/rgpanel/Datatable/Exports"
 
-const getTenantList = async (session: any, url: string) => {
-    const { user }: { user: UserJwtInterface } = session
+const getTenantList = async (token:string, url: string) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}`, {
         headers: {
             'Content-type': 'application/json',
             Accept: 'application/json',
-            Authorization: `Bearer ${user.token}`
-        },
-        cache: 'no-store'
+            Authorization: `Bearer ${token}`
+        }
     })
     if (res.status != 200) {
         throw new Error(res.statusText)
     }
     return await res.json()
 }
-
-const TableTenant = ({ initialData }: { initialData: { data: TenantInterface[], meta?: MetaInterface } }) => {
+const column: ColumnMetaInterface[] = TenantColumn
+const TableTenant = ({ initialData }: { initialData: { data: TenantInterface[], meta?: MetaInterface,token:string } }) => {
     const toast = useRef<Toast>(null);
-    const session = useSession()
-    const column: ColumnMetaInterface[] = TenantColumn
     const [queryKey, setQueryKey] = useState<QueryStringKeyInterface>({
         page: initialData.meta.current_page,
-        withTrash: false
+        withTrash: false,
+        search:''
     })
-
-    const { data, isFetching } = useQuery(objectToQueryString(queryKey), () => getTenantList(session.data, `tenants?${objectToQueryString(queryKey)}`), {
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
+    const { data, isFetching } = useQuery(`tenants?${objectToQueryString(queryKey)}`, () => getTenantList(initialData.token, `tenants?${objectToQueryString(queryKey)}`), {
         initialData: initialData,
     })
     const { data: tenants, meta }: { data: TenantInterface[], meta: MetaInterface } = data
 
-
     return (
         <>
             <Toast ref={toast} position="bottom-right" />
-            <ConfirmDialog />
+            <ConfirmDialog />   
             <Table value={tenants}
                 resizableColumns
                 scrollable
@@ -76,7 +66,7 @@ const TableTenant = ({ initialData }: { initialData: { data: TenantInterface[], 
             >
                 <Td header="Aksi" frozen body={(item) => <ActionHandle item={item} queryKey={queryKey} toast={toast} />}></Td>
                 {column.map((item, key) => (
-                    <Td field={item.field} sortable header={item.header} key={key} body={item.body} style={{ width: item?.width }} />
+                    <Td field={item.field} header={item.header} key={key}/>
                 ))}
 
             </Table>

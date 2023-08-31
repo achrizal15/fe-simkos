@@ -16,8 +16,8 @@ const ActionHandle = ({item, toast, queryKey}:{item:TenantInterface,toast:any,qu
            <PrimeButton tooltip="Edit" tooltipOptions={{ showDelay: 500, position: 'bottom' }} severity="warning" icon="pi pi-pencil"></PrimeButton>
            </Link>
             {item.deleted_at != null
-                ? <Restore item={item} queryKey={objectToQueryString(queryKey)} toastMessage={(message) => toast.current?.show(message)} />
-                : <Delete queryKey={objectToQueryString(queryKey)} item={item} toastMessage={(message) => toast.current?.show(message)} />
+                ? <Restore item={item} queryKey={`tenants?${objectToQueryString(queryKey)}`} toastMessage={(message) => toast.current?.show(message)} />
+                : <Delete queryKey={`tenants?${objectToQueryString(queryKey)}`} item={item} toastMessage={(message) => toast.current?.show(message)} />
             }
         </div>
     )
