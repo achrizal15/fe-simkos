@@ -13,13 +13,14 @@ import { useRef } from "react"
 import { FileUpload } from "primereact/fileupload"
 import { axiosAuthClient } from "@/utils/fetching/axios"
 import { useSession } from "next-auth/react"
-import { useMutation } from "react-query"
+import { useMutation, useQueryClient } from "react-query"
 import { Toast } from "primereact/toast"
 import { AxiosError } from "axios"
 import OccupationSelect from "./_components/OccupationSelect"
 import StudentField from "./_components/StudentField"
 import WorkspaceField from "./_components/WorkspaceField"
 import Link from "next/link"
+import objectToQueryString from "@/constant/objectToQueryString"
 const submitTenant = async ({ session, data }) => {
     const res = await (await axiosAuthClient(session.data.user)).post('/tenants', data, {
         headers: {
@@ -33,12 +34,28 @@ const Form = () => {
     const { control, handleSubmit, reset, getValues, trigger, formState: { errors } } = useForm<TypeTenantFormValues>()
     const fileUploadRef = useRef<FileUpload>(null)
     const toast = useRef<Toast>(null)
+    const queryClient = useQueryClient();
     const { mutate, isLoading } = useMutation(submitTenant, {
         onSuccess: (data) => {
             toast.current.show({ severity: 'success', life: 1500, summary: 'Create', detail: data.message })
             if (fileUploadRef.current) {
                 fileUploadRef.current.clear()
             }
+            console.log(data)
+            queryClient.setQueriesData(['tenants', objectToQueryString({
+                page: 1,
+                withTrash: false,
+                search: ''
+            })],
+                (oldData: any) => (
+                    {
+                        ...oldData,
+                        data: [
+                            data.data,
+                            ...oldData.data,
+                        ]
+                    }
+                ))
             reset()
         },
         onError: (error: AxiosError) => {
@@ -250,9 +267,9 @@ const Form = () => {
                         }
                     </div>
                     <div className="flex gap-2 mt-5">
-                    <Link href={'/rgpanel/tenants'}>
-                        <PrimeButton rounded={false} type="reset" severity="danger">Kembali</PrimeButton>
-                    </Link>
+                        <Link href={'/rgpanel/tenants'}>
+                            <PrimeButton rounded={false} type="reset" severity="danger">Kembali</PrimeButton>
+                        </Link>
                         <PrimeButton rounded={false} loading={isLoading} >Simpan</PrimeButton>
                     </div>
                 </form>

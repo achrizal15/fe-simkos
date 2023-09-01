@@ -4,6 +4,7 @@ import TenantInterface from "@/utils/Interfaces/TenantItemInterface";
 import { API_URL, fetchHeader } from "@/utils/fetching/fetch"
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 const getTenant = async (id: number) => {
     const { headers } = await fetchHeader();
@@ -11,6 +12,7 @@ const getTenant = async (id: number) => {
         headers: headers,
         cache: 'no-store'
     })
+    if(res.status==404) notFound()
     return await res.json()
 }
 const Page = async ({ params }) => {
