@@ -23,10 +23,7 @@ import StudentField from "./_components/StudentField"
 import WorkspaceField from "./_components/WorkspaceField"
 import TenantInterface from "@/utils/Interfaces/TenantItemInterface"
 import objectToQueryString from "@/constant/objectToQueryString"
-import { notFound } from "next/navigation"
-import Loading from "../../loading"
 import RgpanelBeforeRendering from "@/components/core/StaticComponents/RgpanelBeforeRendering"
-import LoadingTable from "@/components/core/StaticComponents/LoadingTable"
 const submitTenant = async ({ session, data, id }) => {
     const res = await ((await axiosAuthClient(session.data.user))).post(`/tenants/${id}`, data, {
         headers: {
