@@ -1,10 +1,11 @@
+import Content from "@/components/rgpanel/content/Content"
 import MobileMenu from "./_components/MobileMenu"
 
 const Page = () => {
     return (
-        <div>
+        <Content title="Dashboard">
             <MobileMenu />
-        </div>
+        </Content>
     )
 }
 export default Page

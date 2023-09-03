@@ -8,9 +8,9 @@ import Navbar from '@/components/rgpanel/navbar/Navbar';
 import Sidebar from '@/components/rgpanel/sidebar/Sidebar';
 import Footer from '@/components/rgpanel/footer/footer';
 import { ALBERT_SANS } from 'constant/fonts';
-import Content from '@/components/rgpanel/content/Content';
 import AuthProvider from '@/components/AuthProvider/AuthProvider';
 import ReactQueryClientProvider from '@/components/ReactQueryProvider/ReactQueryClientProvide';
+import { BreadcrumbProvider } from 'context/BreadCrumb.context';
 
 moment.locale('id');
 export const metadata: Metadata = {
@@ -28,16 +28,16 @@ export default function RootLayout({
             <AuthProvider refetchOnWindowFocus={false}>
                 <PrimeProvider>
                     <body className={` ${ALBERT_SANS.className}`}>
-                        <Navbar />
-                        <Sidebar />
-                        <main className={`${styles.layout}`}>
-                            <Content>
-                                <ReactQueryClientProvider>
+                        <BreadcrumbProvider>
+                            <ReactQueryClientProvider>
+                                <Navbar />
+                                <Sidebar />
+                                <main className={`${styles.layout}`}>
                                     {children}
-                                </ReactQueryClientProvider>
-                            </Content>
-                            <Footer />
-                        </main>
+                                    <Footer />
+                                </main>
+                            </ReactQueryClientProvider>
+                        </BreadcrumbProvider>
                     </body>
                 </PrimeProvider>
             </AuthProvider>

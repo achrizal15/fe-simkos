@@ -21,6 +21,7 @@ import StudentField from "./_components/StudentField"
 import WorkspaceField from "./_components/WorkspaceField"
 import Link from "next/link"
 import objectToQueryString from "@/constant/objectToQueryString"
+import Content from "@/components/rgpanel/content/Content"
 const submitTenant = async ({ session, data }) => {
     const res = await (await axiosAuthClient(session.data.user)).post('/tenants', data, {
         headers: {
@@ -41,7 +42,6 @@ const Form = () => {
             if (fileUploadRef.current) {
                 fileUploadRef.current.clear()
             }
-            console.log(data)
             queryClient.setQueriesData(['tenants', objectToQueryString({
                 page: 1,
                 withTrash: false,
@@ -66,7 +66,7 @@ const Form = () => {
         await mutate({ session, data })
     }
     return (
-        <>
+        <Content title='Tambah Penyewa Baru' subTitle='Manajemen Penyewa / Tambah Penyewa Baru'>
             <Toast ref={toast} position="bottom-right" />
             <PrimeCard title="Form Penyewa Baru" >
                 <form onSubmit={handleSubmit(submit)}>
@@ -274,7 +274,7 @@ const Form = () => {
                     </div>
                 </form>
             </PrimeCard>
-        </>
+       </Content>
 
     )
 }

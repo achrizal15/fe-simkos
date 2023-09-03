@@ -14,7 +14,6 @@ const ContentSidebarMenu = ({ item }: { item: SidebarMenuItemInterface }) => {
     useClickOutside(overlayRef, () => setVisible(!visible));
     const SidebarMenuItems = ({ items }: { items: SidebarMenuItemInterface[] }) => {
         return items.map(function (item, key) {
-            console.log(pathname == item.url)
             return <Link href={item.url} key={key} className={`flex gap-3 items-center hover:text-cyan-700 font-semibold ${pathname == item.url ? 'text-cyan-800':'text-gray-600'}`}> <i className={item.icon}></i> {item.label}</Link>
         })
     };
