@@ -64,9 +64,9 @@ const PrimeFileUpload: React.FC<FileUploadInterface> = ({ defaultPlaceholder, em
                         <p className="p-10 text-center">
                             {emptyPlaceHolder ? emptyPlaceHolder : "Drag and drop files to here to upload."}
                         </p>
-                        : <>
-                            {initialValue != null && <Image priority src={defaultPlaceholder} height={200} width={800} alt="placeholder" />}
-                        </>
+                        : <div className="w-full flex justify-center p-3">
+                            {initialValue != null && <Image priority src={defaultPlaceholder} style={{width:'auto',height:'auto',maxHeight:'300px'}} height={200} width={300} alt="placeholder" />}
+                        </div>
                 }
                 {...rest}
             />

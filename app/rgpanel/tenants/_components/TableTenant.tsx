@@ -69,9 +69,9 @@ const TableTenant = ({ initialData }: { initialData: { data: TenantInterface[], 
                     </div>
                 }
             >
-                <Td header="Aksi" frozen body={(item) => <ActionHandle item={item} queryKey={queryKey} toast={toast} />}></Td>
+                <Td header="Aksi" frozen bodyStyle={{backgroundColor:'white'}} body={(item) => <ActionHandle item={item} queryKey={queryKey} toast={toast} />}></Td>
                 {column.map((item, key) => (
-                    <Td field={item.field} sortable header={item.header} key={key} />
+                    <Td field={item.field} sortable header={item.header} key={key} body={item.body} />
                 ))}
 
             </Table>

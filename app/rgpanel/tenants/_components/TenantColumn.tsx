@@ -15,16 +15,6 @@ const TenantColumn: ColumnMetaInterface[] = [
         field: 'created_at', header: 'Tanggal Registrasi', body: (item: TenantInterface) => {
             return moment(item.created_at).format(format.formatDateTime)
         }
-    },
-    // { field: 'place_of_birth', header: 'Place of Birth' },
-    // { field: 'birthdate', header: 'Birthdate' },
-    // { field: 'identification_document', header: 'Identification Document' },
-    // { field: 'workplace', header: 'Workplace' },
-    // { field: 'school', header: 'School' },
-    // { field: 'workplace_address', header: 'Workplace Address' },
-    // { field: 'school_address', header: 'School Address' },
-    // { field: 'identification_document_filename', header: 'Identification Document Filename' },
-    // { field: 'updated_at', header: 'Updated At' },
-    // { field: 'deleted_at', header: 'Deleted At' }
+    }
 ];
 export default TenantColumn

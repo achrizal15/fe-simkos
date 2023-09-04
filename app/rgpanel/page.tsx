@@ -3,7 +3,7 @@ import MobileMenu from "./_components/MobileMenu"
 
 const Page = () => {
     return (
-        <Content title="Dashboard">
+        <Content title="Dashboard" buttonBackVisibility={false}>
             <MobileMenu />
         </Content>
     )

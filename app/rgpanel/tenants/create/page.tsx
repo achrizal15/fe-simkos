@@ -66,7 +66,7 @@ const Form = () => {
         await mutate({ session, data })
     }
     return (
-        <Content title='Tambah Penyewa Baru' subTitle='Manajemen Penyewa / Tambah Penyewa Baru'>
+        <Content title='Tambah Penyewa Baru' subTitle='Manajemen Penyewa / Tambah Penyewa Baru' buttonBackUrl='/rgpanel/tenants'>
             <Toast ref={toast} position="bottom-right" />
             <PrimeCard title="Form Penyewa Baru" >
                 <form onSubmit={handleSubmit(submit)}>
@@ -267,9 +267,6 @@ const Form = () => {
                         }
                     </div>
                     <div className="flex gap-2 mt-5">
-                        <Link href={'/rgpanel/tenants'}>
-                            <PrimeButton rounded={false} type="reset" severity="danger">Kembali</PrimeButton>
-                        </Link>
                         <PrimeButton rounded={false} loading={isLoading} >Simpan</PrimeButton>
                     </div>
                 </form>

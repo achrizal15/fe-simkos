@@ -91,7 +91,7 @@ const Page = ({ params, searchParams }) => {
     }
     if (tenantLoading || error) return <RgpanelBeforeRendering loading={tenantLoading} error={error} />
     return (
-        <Content title="Edit Penyewa" subTitle='Manajemen Penyewa / Edit Penyewa'>
+        <Content title="Edit Penyewa" subTitle='Manajemen Penyewa / Edit Penyewa' buttonBackUrl='/rgpanel/tenants'>
             <PrimeCard title="Form Edit Penyewa" >
                 <Toast ref={toast} />
                 {tenant &&
@@ -303,9 +303,6 @@ const Page = ({ params, searchParams }) => {
                             }
                         </div>
                         <div className="flex gap-2 mt-5">
-                            <Link href={'/rgpanel/tenants'}>
-                                <PrimeButton rounded={false} type="reset" severity="danger">Kembali</PrimeButton>
-                            </Link>
                             <PrimeButton rounded={false} loading={isLoading} >Simpan</PrimeButton>
                         </div>
                     </form>

@@ -19,7 +19,7 @@ const getTenant = async (id: number) => {
 const Page = async ({ params }) => {
     const { data: tenant }: { data: TenantInterface } = await getTenant(params.id);
     return (
-        <Content title='Informasi Penyewa' subTitle='Manajemen Penyewa / Informasi Penyewa'>
+        <Content title='Informasi Penyewa' subTitle='Manajemen Penyewa / Informasi Penyewa' buttonBackUrl='/rgpanel/tenants'>
             <PrimeCard title={
                 <div className="flex justify-between items-center">
                     Informasi Penyewa
@@ -123,9 +123,6 @@ const Page = async ({ params }) => {
                             )
                     }
                 </div>
-                <Link href={'/rgpanel/tenants'}>
-                    <PrimeButton rounded={false} severity="danger">Kembali</PrimeButton>
-                </Link>
             </PrimeCard>
         </Content>
     )
