@@ -94,7 +94,7 @@ const RgPanelSidebarMenu: SidebarMenuItemInterface[] = [
       {
         label: 'Fitur Kamar',
         icon: 'pi pi-fw pi-cog',
-        url: "#",
+        url: "/rgpanel/room_management/room_features",
         key: 'room_feature',
         items: []
       }

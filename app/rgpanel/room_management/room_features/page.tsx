@@ -1,33 +1,32 @@
-import TenantInterface from '@/utils/Interfaces/TenantItemInterface';
-import TableTenant from './_components/TableTenant';
 import MetaInterface from '@/utils/Interfaces/paginator/MetaInterface';
 import { getServerSession } from 'next-auth';
 import UserJwtInterface from '@/utils/Interfaces/UserJwtInterface';
 import nextAuthOptions from '@/constant/nextAuthOption';
 import Content from '@/components/rgpanel/content/Content';
+import RoomFeatureInteraface from '@/utils/Interfaces/RoomFeatureInteraface';
+import TableFeature from './_components/TableFeature';
 
-const getTenantList = async () => {
+const getData = async () => {
     const { user }: { user: UserJwtInterface } = await getServerSession(nextAuthOptions)
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tenants`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/features`, {
         headers: {
             'Content-type': 'application/json',
             Accept: 'application/json',
             Authorization: `Bearer ${user.token}`
         },
-        cache:"no-cache"
+        cache: 'no-store' 
     })
     if (res.status != 200) {
         throw new Error(res.statusText)
     }
-    return { token:user.token, ...await res.json() }
+    return { user, ...await res.json() }
 }
 
 const Page = async () => {
-    const initialData: { data: TenantInterface[], meta: MetaInterface,token:string } = await getTenantList()
-
+    const initialData: { data: RoomFeatureInteraface[], meta: MetaInterface, user: UserJwtInterface } = await getData()
     return (
-        <Content title='Daftar Penyewa' subTitle='Manajemen Penyewa / Daftar Penyewa'>
-            <TableTenant initialData={initialData} />
+        <Content title='Fitur Kamar' subTitle='Manajemen Kamar / Fitur Kamar'>
+            <TableFeature initialData={initialData}/>
         </Content>
     )
 }

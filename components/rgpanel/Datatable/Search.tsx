@@ -1,12 +1,14 @@
-
+'use client'
+import PrimeInputText from "@/components/core/Input/PrimeInputText"
+import { InputTextProps } from "primereact/inputtext"
 import { useEffect, useState } from "react"
 import { useDebounce } from "usehooks-ts"
-interface SearchInterface extends React.InputHTMLAttributes<HTMLInputElement> {
+interface SearchInterface extends InputTextProps {
     debounce: {
         (value: string)
     }
 }
-const Search = ({ debounce = () => { }, ...rest }: SearchInterface) => {
+const Search = ({ debounce = (value) => { }, ...rest }: SearchInterface) => {
     const [value, setValue] = useState<string>('')
     const debouncedValue = useDebounce(value, 800)
 
@@ -17,10 +19,10 @@ const Search = ({ debounce = () => { }, ...rest }: SearchInterface) => {
     return <div className="flex justify-content-end md:w-auto w-full">
         <span className="p-input-icon-left w-full">
             <i className="pi pi-search" />
-            <input type="text"
-                className={`bg-white focus:outline-none w-full p-2 pl-8 shadow-lg text-gray-600 font-thin ${rest.className}`} placeholder="Search name"
+            <PrimeInputText placeholder="Search name"
+            className="w-full md:w-auto"
                 onChange={(event) => setValue(event.target.value)}
-                {...rest} />
+                {...rest}/>
         </span>
     </div>
 }
