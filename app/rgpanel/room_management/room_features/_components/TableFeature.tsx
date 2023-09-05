@@ -14,6 +14,8 @@ import { useRef, useState } from "react"
 import { useQuery } from "react-query"
 import ActionHandle from "./ActionHandle"
 import { ConfirmDialog } from "primereact/confirmdialog"
+import PrimeButton from "@/components/core/Button/PrimeButton"
+import AddFeature from "./AddFeature"
 
 const getData = async ({ session, url }: { session: any, url: string }) => {
     const res = await (await axiosAuthClient(session)).get(`${process.env.NEXT_PUBLIC_API_URL}/${url}`)
@@ -42,13 +44,16 @@ const TableFeature = ({ initialData }: { initialData: { data: RoomFeatureInteraf
             <ConfirmDialog />
             <div className="flex items-center justify-between w-full flex-wrap gap-4">
                 <Search debounce={(value) => setQueryKey({ ...queryKey, search: value })} />
-                <WithTrash onChange={(value) => setQueryKey({ ...queryKey, withTrash: value })} />
+                <div className="flex items-center gap-5 justify-center md:justify-end">
+                    <WithTrash onChange={(value) => setQueryKey({ ...queryKey, withTrash: value })} />
+                    <AddFeature queryKey={queryKey} user={initialData.user} toast={toast}/>
+                </div>
             </div>
             <div className="grid mt-5 grid-cols-3 md:grid-cols-6 lg:grid-cols-9 gap-5">
                 {feature.map((feature, index) => (
                     <div key={index} className='relative w-full bg-white shadow-xl flex items-center justify-center p-4 flex-col gap-2 hover:bg-[#1D5468] text-[#1D5468] hover:text-white rounded text-center'>
                         <ActionHandle toast={toast} item={feature} queryKey={queryKey} />
-                        <i className={`${feature.icon}`} style={{ fontSize: 24 }}></i>
+                        <i className={`pi ${feature.icon}`} style={{ fontSize: 24 }}></i>
                         {feature.name}
                     </div>
                 ))}
