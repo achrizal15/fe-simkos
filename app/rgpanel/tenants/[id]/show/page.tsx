@@ -4,7 +4,6 @@ import Content from "@/components/rgpanel/content/Content";
 import TenantInterface from "@/utils/Interfaces/TenantItemInterface";
 import { API_URL, fetchHeader } from "@/utils/fetching/fetch"
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 const getTenant = async (id: number) => {

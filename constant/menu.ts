@@ -73,24 +73,11 @@ const RgPanelSidebarMenu: SidebarMenuItemInterface[] = [
       {
         label: 'Daftar Kamar',
         icon: 'pi pi-fw pi-list',
-        url: "#",
+        url: "/rgpanel/room_management",
         key: 'list_rooms',
         items: []
       },
-      {
-        label: 'Tambah Kamar Baru',
-        icon: 'pi pi-fw pi-plus',
-        url: "/rgpanel/room_management/create",
-        key: 'create_rooms',
-        items: []
-      },
-      {
-        label: 'Harga Kamar',
-        icon: 'pi pi-fw pi-money-bill',
-        url: "#",
-        key: 'room_price',
-        items: []
-      },
+
       {
         label: 'Fitur Kamar',
         icon: 'pi pi-fw pi-cog',

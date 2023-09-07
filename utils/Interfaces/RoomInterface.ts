@@ -1,16 +1,17 @@
+import RoomFeatureInteraface from "./RoomFeatureInteraface";
+
 interface RoomInterface {
-    id: string;
-    code: string;
+    id: number;
     name: string;
-    image: string;
-    rating: number;
-    price: number;
     type: string;
+    price: number;
+    image_path: string | null;
+    simple_description: string;
     description: string;
-    features: FeatureInterface[];
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+    features: RoomFeatureInteraface[]; // Relasi dengan fitur
 }
-interface FeatureInterface {
-    name: string;
-    icon: string;
-}
+
 export default RoomInterface;

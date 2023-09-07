@@ -25,7 +25,7 @@ const getData = async () => {
 const Page = async () => {
     const initialData: { data: RoomFeatureInteraface[], meta: MetaInterface, user: UserJwtInterface } = await getData()
     return (
-        <Content title='Fitur Kamar' subTitle='Manajemen Kamar / Fitur Kamar'>
+        <Content title='Fitur Kamar' buttonBackUrl='/rgpanel/room_management' subTitle='Manajemen Kamar / Fitur Kamar'>
             <TableFeature initialData={initialData}/>
         </Content>
     )

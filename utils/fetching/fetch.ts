@@ -9,7 +9,8 @@ const fetchHeader = async() => {
             'Content-type': 'application/json',
             'Accept': 'application/json',
             'Authorization': `Bearer ${user.token}`
-        }
+        },
+        user
     };
 }
 export {fetchHeader,API_URL}
