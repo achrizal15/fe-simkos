@@ -80,7 +80,7 @@ const RgPanelSidebarMenu: SidebarMenuItemInterface[] = [
       {
         label: 'Tambah Kamar Baru',
         icon: 'pi pi-fw pi-plus',
-        url: "#",
+        url: "/rgpanel/room_management/create",
         key: 'create_rooms',
         items: []
       },
