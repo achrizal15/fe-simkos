@@ -1347,7 +1347,8 @@
 
 .p-inputtext-sm .p-inputtext {
     font-size: .875rem;
-    padding: .875rem .875rem
+    padding: .875rem .875rem;
+    width: 100%;
 }
 
 .p-inputtext-lg .p-inputtext {

@@ -12,7 +12,6 @@ import { Toast } from "primereact/toast"
 import { useRef, useState } from "react"
 import { useQuery } from "react-query"
 import { ConfirmDialog } from "primereact/confirmdialog"
-import AddFeature from "./AddFeature"
 import RoomInterface from "@/utils/Interfaces/RoomInterface"
 import Image from 'next/image'
 import { Card } from 'primereact/card'
@@ -52,24 +51,39 @@ const TableRoom = ({ initialData }: { initialData: { data: RoomInterface[], meta
                 <Search debounce={(value) => setQueryKey({ ...queryKey, search: value })} />
                 <div className="flex items-center gap-5 justify-center md:justify-end">
                     <WithTrash onChange={(value) => setQueryKey({ ...queryKey, withTrash: value })} />
-
-                    <AddFeature queryKey={queryKey} user={initialData.user} toast={toast} />
                 </div>
             </div>
             <section className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-5 gap-2">
                 {rooms.map((room, index) => (
-                    <Card key={index} title={room.name} subTitle={room.type} header={<Image loading='lazy' src={room.image_path} width={500} height={500} sizes='(min-width: 768px) 100vw' alt="room-image" />} className="flex flex-col relative">
-                        <div className='-mt-4 mb-2'>
-                            <div className='flex gap-2 items-start flex-wrap justify-start mb-3'> {room.features?.map((feature, key) => <Badge value={<div className='flex items-center gap-2'> <i className={`pi ${feature.icon}`}></i> {feature.name}</div>} key={key} />)}</div>
-                            <p>
-                                {room.simple_description}
-                            </p>
-
-                        </div>
-                        <div className='absolute bottom-0 left-0 right-0 p-4 flex justify-between'>
-                            <p ><b>{formatToRupiah(room.price)}</b></p>
+                    <Card key={index} title={room.name}
+                        pt={{
+                            body: {
+                                className: "flex flex-col justify-between h-[250px]"
+                            },
+                        
+                        }}
+                        subTitle={
+                            <>
+                                {room.type}
+                                <div className='flex gap-2 items-start flex-wrap justify-start mb-3'>
+                                    {room.features?.slice(0, 2).map((feature, key) => <Badge value={<div className='flex items-center gap-2'> <i className={`pi ${feature.icon}`}></i> {feature.name}</div>} key={key} />)}
+                                    {room.features.length - 2 > 0
+                                        && <Badge value={`${room.features.length - 2}+`} />
+                                    }
+                                </div>
+                            </>
+                        }
+                        header={<Image loading='lazy' src={room.image_path} width={500} height={500} sizes='(min-width: 768px) 100vw' alt="room-image" />}
+                        className="relative rounded-lg overflow-hidden hover:shadow-xl">
+                        <div className="absolute top-2 right-2">
                             <ActionHandle toast={toast} item={room} queryKey={queryKey} />
                         </div>
+
+                        <p className='line-clamp-4'>
+                            {room.simple_description} Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim fugit deserunt magni, quae excepturi, ducimus nobis molestias inventore delectus suscipit adipisci? Porro delectus sunt ducimus eligendi error dicta in inventore.
+                        </p>
+                        <p className='mt-2'><b>{formatToRupiah(Math.min(room.daily_price, room.monthly_price, room.yearly_price))} - {formatToRupiah(Math.max(room.daily_price, room.monthly_price, room.yearly_price))}</b></p>
+
                     </Card>
                 ))}
             </section>

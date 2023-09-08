@@ -1,16 +1,14 @@
 'use client';
 import React from 'react';
-import Image from 'next/image';
 import { Carousel } from 'primereact/carousel';
 import style from '../page.module.scss';
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai';
 import RoomInteraface from 'utils/Interfaces/RoomInterface';
 import TemplateRoomsCarousel from './TemplateRoomsCarousel';
-import Rooms from './RoomsData';
- 
-export default function RoomsSection() {
+
+const RoomsSection =  ({ rooms }:{rooms:RoomInteraface[]}) => {
     const carouselRef = React.useRef(null);
-    const [room, setRoom] = React.useState<RoomInteraface[]>(Rooms);
+
     const responsiveOptions = [
         {
             breakpoint: '1199px',
@@ -44,7 +42,6 @@ export default function RoomsSection() {
             nextElement.click();
         }
     };
-
     return (
         <Carousel
             containerClassName={style.roomContainerCarousel}
@@ -63,10 +60,11 @@ export default function RoomsSection() {
                     </div>
                 </div>
             }
-            value={room}
+            value={rooms}
             numVisible={3}
             responsiveOptions={responsiveOptions}
-            itemTemplate={(room:RoomInteraface) => <TemplateRoomsCarousel room={room} />}
+            itemTemplate={(room: RoomInteraface) => <TemplateRoomsCarousel room={room} />}
         ></Carousel>
     );
 }
+export default RoomsSection

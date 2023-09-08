@@ -4,7 +4,9 @@ interface RoomInterface {
     id: number;
     name: string;
     type: string;
-    price: number;
+    yearly_price: number;
+    monthly_price: number;
+    daily_price: number;
     image_path: string | null;
     simple_description: string;
     description: string;
