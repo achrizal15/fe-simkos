@@ -107,7 +107,9 @@ const FormRoom = ({ param = null, user, features }: {
             toast.current.show({ severity: 'error', life: 1500, summary: initialData ? "Update" : "Create", detail: data.message })
         }
     })
-    const submit = (data: FormEvent<HTMLFormElement>) => mutate({ session: user, data, url: initialData ? `/rooms/${initialData.id}` : '/rooms' });
+    const submit = (data: FormEvent<HTMLFormElement>) =>{
+        mutate({ session: user, data, url: initialData ? `/rooms/${initialData.id}` : '/rooms' });
+    }
     if (editLoading || error) return <RgpanelBeforeRendering loading={editLoading} error={error} />
     return (
         <>
@@ -149,7 +151,7 @@ const FormRoom = ({ param = null, user, features }: {
                                 control={control}
                                 name="description"
                                 defaultValue={initialData?.description}
-                                render={({ field: { onChange, onBlur, value } }) => <Editor onTextChange={(e: EditorTextChangeEvent) => onChange(e.textValue)} style={{ height: '100px' }} name="description" id="description" onBlur={onBlur} onChange={onChange} value={value} />}
+                                render={({ field: { onChange, onBlur, value } }) => <Editor onTextChange={(e: EditorTextChangeEvent) => onChange(e.htmlValue)} style={{ height: '100px' }} name="description" id="description" onBlur={onBlur} onChange={onChange} value={value} />}
                                 rules={{
                                     required: 'Tidak Boleh kosong'
                                 }}

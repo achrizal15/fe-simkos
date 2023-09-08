@@ -20,7 +20,7 @@ const TemplateRoomsCarousel: React.FC<{ room: RoomInterface }> = ({ room }) => {
             </div>
             <div className='p-5'>
                 <H3 className='group-hover:text-purple-600'>{room.name}</H3>
-                <p className='line-clamp-2 mt-2'>{room.description}</p>
+                <p className='line-clamp-2 mt-2'>{room.simple_description}</p>
                 <div className='grid grid-cols-8 mt-5 border-b pb-5 group-hover:border-purple-200'>
                     {room.features.map((feature, key) => {
                        return (

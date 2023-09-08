@@ -8,7 +8,7 @@ import { fetchHeader } from '@/utils/fetching/fetch';
 // https://sailing.thimpress.com/demo-1/
 const getRooms = async () => {
     const { headers } = await fetchHeader()
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rooms`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_FE_API_URL}/rooms`, {
         headers
     })
     if (res.status != 200) {
