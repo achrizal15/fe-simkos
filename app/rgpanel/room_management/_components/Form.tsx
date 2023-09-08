@@ -49,7 +49,7 @@ const submitFeature = async ({ session, data, url = '/rooms' }) => {
 }
 const initialSugestTypeRoom = ['BASIC', 'VVIP', 'VVIP I', 'VVIP II']
 const FormRoom = ({ param = null, user, features }: {
-    param: any | null,
+    param?: any | null,
     user: UserJwtInterface,
     features: RoomFeatureInteraface[]
 }) => {
