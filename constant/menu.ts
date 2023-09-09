@@ -94,6 +94,28 @@ const RgPanelSidebarMenu: SidebarMenuItemInterface[] = [
     ]
   },
   {
+    label: 'Manajemen Booking',
+    icon: 'pi pi-fw pi-calendar',
+    url: "/rgpanel/booking_management",
+    key: 'booking_management',
+    items: [
+      {
+        label: 'Booking',
+        icon: 'pi pi-fw pi-book',
+        url: "/rgpanel/booking_management/booking",
+        key: 'booking_management',
+        items: []
+      },
+      {
+        label: 'Konfirmasi Reservasi',
+        icon: 'pi pi-fw pi-check',
+        url: "/rgpanel/booking_management/reservation_confirmation",
+        key: 'booking_management',
+        items: []
+      }
+    ]
+  },
+  {
     key: 'invoice_faktur',
     label: 'Tagihan & Faktur',
     icon: 'pi pi-fw pi-file',
