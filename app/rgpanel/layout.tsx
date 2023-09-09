@@ -27,18 +27,18 @@ export default function RootLayout({
         <html lang='en' className='text-sm'>
             <AuthProvider refetchOnWindowFocus={false}>
                 <PrimeProvider>
-                    <body className={` ${ALBERT_SANS.className}`}>
-                        <BreadcrumbProvider>
-                            <ReactQueryClientProvider>
-                                <Navbar />
-                                <Sidebar />
-                                <main className={`${styles.layout}`}>
-                                    {children}
-                                    <Footer />
-                                </main>
-                            </ReactQueryClientProvider>
-                        </BreadcrumbProvider>
-                    </body>
+                        <body className={` ${ALBERT_SANS.className}`}>
+                            <BreadcrumbProvider>
+                                <ReactQueryClientProvider>
+                                    <Navbar />
+                                    <Sidebar/>
+                                    <main className={`${styles.layout}`}>
+                                        {children}
+                                        <Footer />
+                                    </main>
+                                </ReactQueryClientProvider>
+                            </BreadcrumbProvider>
+                        </body>
                 </PrimeProvider>
             </AuthProvider>
         </html>

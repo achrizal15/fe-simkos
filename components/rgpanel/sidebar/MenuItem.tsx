@@ -1,11 +1,10 @@
-'use client'
+
 // https://preview.keenthemes.com/metronic8/react/demo4/dashboard
 import React, { useState, useRef } from 'react';
 import { usePathname } from "next/navigation";
 import Link from 'next/link';
 import SidebarMenuItemInterface from '@/utils/Interfaces/SidebarMenuItemInterface';
 import { useClickOutside } from 'primereact/hooks';
-import { useRouter } from 'next/router';
 const ContentSidebarMenu = ({ item }: { item: SidebarMenuItemInterface }) => {
     const pathname = usePathname()
     const isActive = pathname.split('/')[2] == item.url.split('/')[2];

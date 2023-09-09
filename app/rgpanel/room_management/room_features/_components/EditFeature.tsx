@@ -9,6 +9,7 @@ import { axiosAuthClient } from "@/utils/fetching/axios";
 import {  useQuery} from "react-query";
 const getFeature = async ({ session, id }) => {
     const res = await (await axiosAuthClient(session)).get(`/features/${id}`);
+
     return res.data?.data
 }
 interface EditFeatureProps { item: RoomFeatureInteraface, toast: any, queryKey: QueryStringKeyInterface }
